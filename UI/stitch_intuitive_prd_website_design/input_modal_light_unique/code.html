@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Smim - Add Content</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f5f3f3",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c6c5d3",
+                        "primary": "#132175",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e4e2e2",
+                        "secondary": "#136299",
+                        "primary-fixed-dim": "#bbc3ff",
+                        "tertiary-fixed": "#ffdbc8",
+                        "on-primary-container": "#9da9ff",
+                        "on-tertiary-fixed": "#321300",
+                        "tertiary": "#4b2000",
+                        "surface-bright": "#fbf9f8",
+                        "on-tertiary-container": "#f19a62",
+                        "surface": "#fbf9f8",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#82c1fd",
+                        "surface-container-highest": "#e4e2e2",
+                        "on-tertiary-fixed-variant": "#733504",
+                        "on-secondary-fixed": "#001d33",
+                        "inverse-surface": "#303030",
+                        "secondary-fixed": "#cfe5ff",
+                        "inverse-on-surface": "#f2f0f0",
+                        "primary-container": "#2d3a8c",
+                        "on-primary-fixed": "#000e5f",
+                        "background": "#fbf9f8",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#eae8e7",
+                        "on-primary-fixed-variant": "#323f91",
+                        "primary-fixed": "#dfe0ff",
+                        "tertiary-fixed-dim": "#ffb68a",
+                        "on-background": "#1b1c1c",
+                        "inverse-primary": "#bbc3ff",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#4b57aa",
+                        "on-secondary-fixed-variant": "#004a77",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#98cbff",
+                        "outline": "#767683",
+                        "on-surface-variant": "#454651",
+                        "on-secondary-container": "#004e7e",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#6d3100",
+                        "surface-dim": "#dbd9d9",
+                        "on-surface": "#1b1c1c",
+                        "surface-container": "#efeded"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "container-max": "1120px",
+                        "lg": "48px",
+                        "md": "24px",
+                        "xl": "80px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-reading": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-ui": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-reading": ["17px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-ui": ["14px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-reading text-body-reading min-h-screen flex items-center justify-center p-md">
+<!-- Dimmed Background Overlay -->
+<div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-[2px] z-40 transition-opacity"></div>
+<!-- Modal Container -->
+<div class="relative z-50 w-full max-w-2xl bg-surface-container-lowest rounded-xl shadow-[0_8px_32px_-8px_rgba(19,33,117,0.08)] border border-surface-container overflow-hidden">
+<!-- Modal Header -->
+<div class="flex items-center justify-between p-md border-b border-surface-container-high bg-surface-container-lowest">
+<h2 class="font-headline-md text-headline-md text-on-surface">Add to Knowledge Base</h2>
+<button class="text-outline hover:text-on-surface transition-colors p-xs rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">close</span>
+</button>
+</div>
+<!-- Modal Body: Tabs -->
+<div class="bg-surface">
+<nav aria-label="Tabs" class="flex overflow-x-auto border-b border-surface-container-high hide-scrollbar">
+<!-- Active Tab -->
+<button class="flex items-center space-x-2 px-md py-sm border-b-2 border-primary bg-surface-container-lowest text-primary font-body-ui text-body-ui font-medium whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-[18px]">link</span>
+<span>Article URL</span>
+</button>
+<!-- Inactive Tabs -->
+<button class="flex items-center space-x-2 px-md py-sm border-b-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-body-ui text-body-ui whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-[18px]">smart_display</span>
+<span>YouTube URL</span>
+</button>
+<button class="flex items-center space-x-2 px-md py-sm border-b-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-body-ui text-body-ui whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+<span>Instagram URL</span>
+</button>
+<button class="flex items-center space-x-2 px-md py-sm border-b-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-body-ui text-body-ui whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-[18px]">upload_file</span>
+<span>File Upload</span>
+</button>
+<button class="flex items-center space-x-2 px-md py-sm border-b-2 border-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-body-ui text-body-ui whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-[18px]">notes</span>
+<span>Direct Text</span>
+</button>
+</nav>
+</div>
+<!-- Tab Content Area -->
+<div class="p-lg bg-surface-container-lowest">
+<!-- Article URL Content -->
+<div class="space-y-md">
+<div>
+<label class="block font-body-ui text-body-ui text-on-surface-variant mb-xs" for="url-input">Paste URL to extract content</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">language</span>
+</div>
+<input class="block w-full pl-[40px] pr-sm py-sm bg-surface border border-outline-variant rounded-lg text-on-surface focus:ring-secondary focus:border-secondary transition-all font-body-ui text-body-ui" id="url-input" placeholder="https://example.com/article" type="url"/>
+</div>
+</div>
+<div class="flex items-start space-x-sm bg-surface-container-low p-sm rounded-lg border border-surface-container">
+<span class="material-symbols-outlined text-secondary mt-xs">info</span>
+<p class="font-body-ui text-body-ui text-on-surface-variant text-sm">
+                        Smim will attempt to extract the main text, author, and publish date. You can review and edit before saving.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="flex items-center justify-end px-md py-sm border-t border-surface-container-high bg-surface-container-lowest space-x-sm">
+<button class="px-md py-sm rounded-lg font-label-caps text-label-caps text-on-surface-variant border border-outline-variant hover:bg-surface-container-low transition-colors">
+                CANCEL
+            </button>
+<button class="px-md py-sm rounded-lg font-label-caps text-label-caps bg-primary text-on-primary hover:bg-primary/90 transition-colors shadow-sm">
+                SAVE
+            </button>
+</div>
+</div>
+<style>
+        /* Minimal custom styling for hide-scrollbar if needed, though mostly tailwind handles it */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

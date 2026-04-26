@@ -1,0 +1,7 @@
+# Secrets
+client_secret_*.apps.googleusercontent.com.json
+**/.env*
+**/node_modules/
+
+# macOS
+.DS_Store
