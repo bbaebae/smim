@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`${process.env.BACKEND_URL}/cron/weekly-report`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/cron/review-notify`, {
       method: 'POST',
       headers: { 'x-internal-key': process.env.INTERNAL_API_KEY ?? '' },
     })

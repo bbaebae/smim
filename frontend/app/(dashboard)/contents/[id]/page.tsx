@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
+import ContentTabs from '@/components/ContentTabs'
 
 export default async function ContentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -26,72 +27,77 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
     .single()
 
   return (
-    <article className="space-y-4">
-      <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900">
-        ← 목록으로
+    <div className="px-6 py-8 max-w-3xl">
+      {/* 뒤로가기 */}
+      <Link
+        href="/library"
+        className="inline-flex items-center gap-1 text-[13px] text-[#767683] hover:text-[#132175] transition-colors mb-6"
+      >
+        <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+        라이브러리
       </Link>
 
+      {/* 썸네일 */}
       {content.thumbnail_url && (
-        <div className="relative h-48 w-full overflow-hidden rounded-xl">
+        <div className="relative h-52 w-full overflow-hidden rounded-2xl mb-6">
           <Image src={content.thumbnail_url} alt="" fill className="object-cover" unoptimized />
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2">
-        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+      {/* 카테고리 + 태그 */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        <span className="rounded-full bg-[#136299]/10 px-3 py-1 text-[11px] font-semibold text-[#136299] uppercase tracking-wide">
           {content.category}
         </span>
         {(content.tags as string[]).map((tag: string) => (
-          <span key={tag} className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-600">
+          <span key={tag} className="rounded-full bg-[#efeded] border border-[#e4e2e2] px-3 py-1 text-[11px] font-medium text-[#454651]">
             #{tag}
           </span>
         ))}
       </div>
 
-      <h1 className="text-xl font-bold text-gray-900">{content.title}</h1>
+      {/* 제목 */}
+      <h1 className="text-[24px] font-bold text-[#1b1c1c] leading-snug tracking-tight mb-3">
+        {content.title}
+      </h1>
 
+      {/* 원본 URL */}
       {content.url && (
         <a
           href={content.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="block truncate text-sm text-indigo-600 hover:underline"
+          className="inline-flex items-center gap-1 text-[13px] text-[#136299] hover:underline mb-6"
         >
-          {content.url}
+          <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+          원문 보기
         </a>
       )}
 
-      <section className="rounded-xl bg-indigo-50 p-4">
-        <h2 className="mb-2 text-sm font-semibold text-indigo-800">AI 요약</h2>
-        <p className="text-sm leading-relaxed text-gray-700">{content.summary}</p>
-      </section>
-
+      {/* 복습 정보 */}
       {schedule && (
-        <section className="rounded-xl border border-gray-200 bg-white p-4">
-          <h2 className="mb-2 text-sm font-semibold text-gray-700">복습 정보</h2>
-          <div className="flex gap-6 text-sm text-gray-600">
-            <div>
-              <span className="text-xs text-gray-400">다음 복습</span>
-              <p className="font-medium">{schedule.next_review_at}</p>
-            </div>
-            <div>
-              <span className="text-xs text-gray-400">복습 횟수</span>
-              <p className="font-medium">{schedule.review_count}회</p>
-            </div>
-            <div>
-              <span className="text-xs text-gray-400">주기</span>
-              <p className="font-medium">{schedule.interval_days}일</p>
-            </div>
+        <section className="rounded-xl bg-white border border-[#e4e2e2] p-5 mb-6 ambient-shadow">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="material-symbols-outlined text-[18px] text-[#767683]">schedule</span>
+            <h2 className="text-[13px] font-semibold text-[#454651]">복습 정보</h2>
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { label: '다음 복습', value: schedule.next_review_at },
+              { label: '복습 횟수', value: `${schedule.review_count}회` },
+              { label: '복습 주기', value: `${schedule.interval_days}일` },
+            ].map((s) => (
+              <div key={s.label}>
+                <p className="text-[11px] text-[#767683] mb-0.5">{s.label}</p>
+                <p className="text-[14px] font-semibold text-[#1b1c1c]">{s.value}</p>
+              </div>
+            ))}
           </div>
         </section>
       )}
 
-      <section>
-        <h2 className="mb-2 text-sm font-semibold text-gray-700">원문</h2>
-        <div className="whitespace-pre-wrap rounded-xl bg-gray-50 p-4 text-sm leading-relaxed text-gray-600">
-          {content.full_text}
-        </div>
-      </section>
-    </article>
+      {/* 요약 / 원문 / AI 채팅 탭 */}
+      <ContentTabs summary={content.summary} fullText={content.full_text ?? null} />
+    </div>
   )
 }

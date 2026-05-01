@@ -17,8 +17,8 @@ export default async function ReviewPage() {
     .lte('next_review_at', today)
 
   return (
-    <div className="px-4 pt-8 pb-8">
-      <div className="max-w-2xl mx-auto mb-8">
+    <div className="px-6 py-8 max-w-3xl">
+      <div className="mb-8">
         <h1 className="text-[28px] font-bold text-[#1b1c1c] tracking-tight mb-1">복습</h1>
         <p className="text-[14px] text-[#767683]">오늘 복습할 콘텐츠</p>
       </div>

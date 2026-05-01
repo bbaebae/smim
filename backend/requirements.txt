@@ -1,0 +1,26 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic-settings>=2.6.0
+httpx>=0.28.0
+
+# scraping
+trafilatura>=2.0.0
+
+# youtube
+youtube-transcript-api>=0.6.3
+
+# AI
+anthropic>=0.40.0
+
+# DB
+supabase>=2.10.0
+
+# email
+resend>=2.0.0
+
+# file parsing
+pypdf>=5.0.0
+python-multipart>=0.0.12
+
+# payments
+stripe>=11.0.0

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -9,6 +10,7 @@ const navItems = [
   { href: '/dashboard', icon: 'grid_view', label: '홈' },
   { href: '/review', icon: 'psychology_alt', label: '복습' },
   { href: '/library', icon: 'book_2', label: '라이브러리' },
+  { href: '/plan', icon: 'workspace_premium', label: '플랜' },
 ]
 
 export default function Sidebar() {
@@ -27,8 +29,8 @@ export default function Sidebar() {
       <nav className="hidden md:flex fixed top-0 left-0 h-screen w-60 flex-col bg-[#f5f3f3] border-r border-[#e4e2e2] z-50 p-4">
         {/* Logo */}
         <div className="flex items-center gap-3 mb-10 px-2 pt-2">
-          <div className="w-9 h-9 rounded-lg bg-[#2d3a8c] flex items-center justify-center text-white font-bold text-sm">
-            스
+          <div className="w-9 h-9 rounded-lg bg-[#2d3a8c] flex items-center justify-center shrink-0">
+            <Image src="/logo.png" alt="스밈" width={22} height={22} style={{ objectFit: 'contain' }} />
           </div>
           <div>
             <div className="text-[15px] font-bold text-[#132175] leading-tight tracking-tight">스밈</div>

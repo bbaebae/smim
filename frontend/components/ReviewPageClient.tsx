@@ -33,7 +33,6 @@ export default function ReviewPageClient({ items }: Props) {
     }
   }, [current, items.length, router])
 
-  // Space key → Remember
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.code === 'Space' && !loading && !done && items.length > 0) {
@@ -47,11 +46,11 @@ export default function ReviewPageClient({ items }: Props) {
 
   if (items.length === 0 || done) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 text-center">
-        <div className="w-16 h-16 rounded-full bg-[#132175]/10 flex items-center justify-center mb-6">
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <div className="w-16 h-16 rounded-full bg-[#132175]/10 flex items-center justify-center mb-5">
           <span className="material-symbols-outlined text-[32px] text-[#132175]">check_circle</span>
         </div>
-        <h2 className="text-[22px] font-semibold text-[#1b1c1c] mb-2">오늘 복습 완료!</h2>
+        <h2 className="text-[20px] font-bold text-[#1b1c1c] mb-2">오늘 복습 완료!</h2>
         <p className="text-[14px] text-[#767683] mb-8">내일 또 만나요</p>
         <Link
           href="/dashboard"
@@ -67,11 +66,11 @@ export default function ReviewPageClient({ items }: Props) {
   const progress = current / items.length
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
-      {/* Progress header */}
+    <div>
+      {/* 진행 헤더 */}
       <div className="flex items-center gap-4 mb-8">
-        <span className="text-[14px] text-[#454651]">{current + 1} / {items.length}</span>
-        <div className="flex-1 h-1 bg-[#e4e2e2] rounded-full overflow-hidden">
+        <span className="text-[13px] font-medium text-[#767683] shrink-0">{current + 1} / {items.length}</span>
+        <div className="flex-1 h-1.5 bg-[#e4e2e2] rounded-full overflow-hidden">
           <div
             className="h-full bg-[#136299] rounded-full transition-all duration-300"
             style={{ width: `${progress * 100}%` }}
