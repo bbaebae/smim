@@ -57,7 +57,7 @@ def _whisper_transcribe(video_id: str) -> tuple[str, str]:
 
     with tempfile.TemporaryDirectory() as tmpdir:
         ydl_opts = {
-            "format": "140/139/bestaudio[ext=m4a]/bestaudio",
+            "format": "bestaudio[ext=m4a]/bestaudio[ext=webm]/bestaudio[ext=mp3]/bestaudio/best",
             "outtmpl": f"{tmpdir}/audio.%(ext)s",
             "quiet": True,
             "no_warnings": True,
