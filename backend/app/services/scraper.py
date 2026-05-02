@@ -22,6 +22,7 @@ _HEADERS = {
 
 _NOTION_BLOCK_TYPES = {
     "text", "heading_1", "heading_2", "heading_3",
+    "sub_header", "sub_sub_header",  # 구버전 Notion 헤딩
     "bulleted_list", "numbered_list", "toggle",
     "quote", "callout", "to_do",
 }
