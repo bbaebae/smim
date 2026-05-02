@@ -20,4 +20,4 @@ app.include_router(stripe_router.router)
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {"status": "ok", "version": "2025-05-02-whisper"}
