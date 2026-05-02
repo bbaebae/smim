@@ -8,6 +8,8 @@ trafilatura>=2.0.0
 
 # youtube
 youtube-transcript-api>=0.6.3
+yt-dlp>=2024.1.0
+openai>=1.0.0
 
 # AI
 anthropic>=0.40.0
