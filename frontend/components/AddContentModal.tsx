@@ -1,7 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import ErrorToast from './ErrorToast'
+import { toFriendlyMessage } from '@/lib/errors'
 
 type Tab = 'article' | 'youtube' | 'text' | 'file'
 
@@ -43,18 +45,25 @@ export default function AddContentModal({ onClose }: Props) {
   const [text, setText] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [toastMsg, setToastMsg] = useState('')
+  const [toastContact, setToastContact] = useState(false)
+  const errorCountRef = useRef(0)
+
+  function showError(raw: string) {
+    errorCountRef.current += 1
+    setToastMsg(toFriendlyMessage(raw))
+    setToastContact(errorCountRef.current >= 2)
+  }
 
   const activeTab = TABS.find((t) => t.id === tab)!
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setError('')
     setLoading(true)
     try {
       let res: Response
       if (tab === 'file') {
-        if (!file) { setError('파일을 선택해주세요'); setLoading(false); return }
+        if (!file) { setToastMsg('파일을 선택해주세요.'); setLoading(false); return }
         const fd = new FormData()
         fd.append('type', 'file')
         fd.append('file', file)
@@ -72,14 +81,14 @@ export default function AddContentModal({ onClose }: Props) {
 
       if (!res.ok) {
         const json = await res.json()
-        setError(json.error ?? '오류가 발생했습니다')
+        showError(json.error ?? '')
         return
       }
 
       router.refresh()
       onClose()
     } catch {
-      setError('네트워크 오류가 발생했습니다')
+      showError('network')
     } finally {
       setLoading(false)
     }
@@ -202,8 +211,12 @@ export default function AddContentModal({ onClose }: Props) {
               </>
             )}
 
-            {error && (
-              <p className="text-[13px] text-[#ba1a1a] bg-[#ffdad6] px-3 py-2 rounded-lg">{error}</p>
+            {toastMsg && (
+              <ErrorToast
+                message={toastMsg}
+                showContact={toastContact}
+                onClose={() => setToastMsg('')}
+              />
             )}
           </div>
 

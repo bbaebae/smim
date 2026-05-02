@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import ContentCard, { ContentItem } from './ContentCard'
+import ErrorToast from './ErrorToast'
+import { toFriendlyMessage } from '@/lib/errors'
 
 type Props = {
   contents: ContentItem[]
@@ -75,25 +77,32 @@ function AddContentInline() {
   const [text, setText] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
   const [upgradeNeeded, setUpgradeNeeded] = useState(false)
   const [done, setDone] = useState(false)
+  const [toastMsg, setToastMsg] = useState('')
+  const [toastContact, setToastContact] = useState(false)
+  const errorCountRef = useRef(0)
 
   const activeTab = TABS.find((t) => t.id === tab)!
 
   function resetForm() {
-    setUrl(''); setTitle(''); setText(''); setFile(null); setError(''); setUpgradeNeeded(false); setDone(false)
+    setUrl(''); setTitle(''); setText(''); setFile(null); setUpgradeNeeded(false); setDone(false)
+  }
+
+  function showError(raw: string) {
+    errorCountRef.current += 1
+    setToastMsg(toFriendlyMessage(raw))
+    setToastContact(errorCountRef.current >= 2)
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setError('')
     setUpgradeNeeded(false)
     setLoading(true)
     try {
       let res: Response
       if (tab === 'file') {
-        if (!file) { setError('파일을 선택해주세요'); setLoading(false); return }
+        if (!file) { setToastMsg('파일을 선택해주세요.'); setLoading(false); return }
         const fd = new FormData()
         fd.append('type', 'file')
         fd.append('file', file)
@@ -110,15 +119,15 @@ function AddContentInline() {
       }
       if (!res.ok) {
         const json = await res.json()
-        if (json.upgrade) setUpgradeNeeded(true)
-        setError(json.error ?? '오류가 발생했습니다')
+        if (json.upgrade) { setUpgradeNeeded(true); return }
+        showError(json.error ?? '')
         return
       }
       setDone(true)
       resetForm()
       router.refresh()
     } catch {
-      setError('네트워크 오류가 발생했습니다')
+      showError('network')
     } finally {
       setLoading(false)
     }
@@ -135,7 +144,7 @@ function AddContentInline() {
         {TABS.map((t) => (
           <button
             key={t.id}
-            onClick={() => { setTab(t.id); setError(''); setDone(false) }}
+            onClick={() => { setTab(t.id); setToastMsg(''); setDone(false) }}
             className={`flex items-center gap-1.5 px-4 py-2.5 text-[13px] font-medium border-b-2 transition-colors whitespace-nowrap ${
               tab === t.id
                 ? 'border-[#132175] text-[#132175] bg-white'
@@ -204,16 +213,21 @@ function AddContentInline() {
           </label>
         )}
 
-        {error && (
+        {upgradeNeeded && (
           <div className="rounded-lg bg-[#ba1a1a]/5 border border-[#ba1a1a]/20 px-3 py-2.5">
-            <p className="text-[12px] text-[#ba1a1a]">{error}</p>
-            {upgradeNeeded && (
-              <a href="/plan" className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold text-[#132175] hover:underline">
-                <span className="material-symbols-outlined text-[13px]">workspace_premium</span>
-                Pro로 업그레이드 →
-              </a>
-            )}
+            <p className="text-[12px] text-[#ba1a1a]">저장 한도에 도달했습니다.</p>
+            <a href="/plan" className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold text-[#132175] hover:underline">
+              <span className="material-symbols-outlined text-[13px]">workspace_premium</span>
+              Pro로 업그레이드 →
+            </a>
           </div>
+        )}
+        {toastMsg && (
+          <ErrorToast
+            message={toastMsg}
+            showContact={toastContact}
+            onClose={() => setToastMsg('')}
+          />
         )}
         {done && (
           <p className="text-[12px] text-[#136299] flex items-center gap-1">
