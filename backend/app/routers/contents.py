@@ -41,7 +41,7 @@ async def process_content(req: ProcessRequest):
             raise HTTPException(400, "url이 필요합니다")
         try:
             result = await youtube.get_youtube_info(req.url)
-        except ValueError as e:
+        except Exception as e:
             raise HTTPException(400, str(e))
         title = result["title"] or req.url
         full_text = result["transcript"]

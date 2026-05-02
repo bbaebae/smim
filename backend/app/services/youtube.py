@@ -45,6 +45,71 @@ def _fetch_transcript(video_id: str) -> str:
     return ""
 
 
+def _parse_vtt(content: str) -> str:
+    """VTT 자막 텍스트 추출. YouTube 자동생성 자막의 rolling window 중복 제거."""
+    text_lines = []
+    for line in content.split("\n"):
+        line = line.strip()
+        if not line or line.startswith("WEBVTT") or line.startswith("NOTE") or "-->" in line:
+            continue
+        line = re.sub(r"<[^>]+>", "", line).strip()
+        if line:
+            text_lines.append(line)
+
+    # Rolling window 중복 제거: 현재 줄이 다음 줄의 앞부분이면 스킵
+    result = []
+    for i, line in enumerate(text_lines):
+        if i < len(text_lines) - 1 and text_lines[i + 1].startswith(line):
+            continue
+        result.append(line)
+
+    return " ".join(result)
+
+
+def _fetch_subtitle_ytdlp(video_id: str) -> str:
+    """yt-dlp로 자막 다운로드 (자동 생성 포함). API 키 불필요."""
+    import yt_dlp
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        ydl_opts = {
+            "skip_download": True,
+            "writesubtitles": True,
+            "writeautomaticsub": True,
+            "subtitleslangs": ["ko", "en", "ja"],
+            "subtitlesformat": "vtt",
+            "outtmpl": f"{tmpdir}/sub",
+            "quiet": True,
+            "no_warnings": True,
+            "extractor_args": {"youtube": {"player_client": ["tv_embedded", "android"]}},
+        }
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
+        except Exception:
+            return ""
+
+        # 한국어 우선, 없으면 다른 언어
+        for lang in ["ko", "en", "ja"]:
+            files = glob.glob(f"{tmpdir}/sub.{lang}.vtt") + glob.glob(f"{tmpdir}/sub.{lang}-*.vtt")
+            if files:
+                try:
+                    with open(files[0], encoding="utf-8") as f:
+                        return _parse_vtt(f.read())
+                except Exception:
+                    continue
+
+        # 언어 구분 없이 첫 번째 VTT
+        all_vtt = glob.glob(f"{tmpdir}/sub.*.vtt")
+        if all_vtt:
+            try:
+                with open(all_vtt[0], encoding="utf-8") as f:
+                    return _parse_vtt(f.read())
+            except Exception:
+                pass
+
+    return ""
+
+
 def _whisper_transcribe(video_id: str) -> tuple[str, str]:
     """yt-dlp로 오디오 다운로드 후 OpenAI Whisper API로 음성인식."""
     import yt_dlp
@@ -89,12 +154,20 @@ async def get_youtube_info(url: str) -> YoutubeResult:
 
     thumbnail_url = f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg"
 
-    # 1단계: 자막 시도 (빠름)
+    # 1단계: youtube_transcript_api (빠름)
     transcript = await asyncio.to_thread(_fetch_transcript, video_id)
     if transcript:
         return {"video_id": video_id, "title": "", "transcript": transcript, "thumbnail_url": thumbnail_url}
 
-    # 2단계: 자막 없으면 OpenAI Whisper 음성인식
+    # 2단계: yt-dlp 자막 다운로드 (자동 생성 포함, API 키 불필요)
+    transcript = await asyncio.to_thread(_fetch_subtitle_ytdlp, video_id)
+    if transcript:
+        return {"video_id": video_id, "title": "", "transcript": transcript, "thumbnail_url": thumbnail_url}
+
+    # 3단계: Whisper 음성인식 (OPENAI_API_KEY 필요)
+    if not settings.openai_api_key:
+        raise ValueError("자막을 가져올 수 없는 영상입니다. 자막(자동생성 포함)이 있는 영상을 사용해주세요.")
+
     title, transcript = await asyncio.to_thread(_whisper_transcribe, video_id)
     if not transcript:
         raise ValueError("음성 인식 결과가 없습니다")
