@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     stripe_webhook_secret: str = ""
     stripe_price_pro: str = ""
     stripe_price_annual: str = ""
+    openai_api_key: str = ""
 
     model_config = {"env_file": ".env", "case_sensitive": False}
 

@@ -7,8 +7,7 @@ from typing import TypedDict
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import NoTranscriptFound, TranscriptsDisabled
 
-# 모델은 한 번만 로드해서 재사용
-_whisper_model = None
+from app.config import settings
 
 
 class YoutubeResult(TypedDict):
@@ -46,18 +45,12 @@ def _fetch_transcript(video_id: str) -> str:
     return ""
 
 
-def _get_whisper_model():
-    global _whisper_model
-    if _whisper_model is None:
-        from faster_whisper import WhisperModel
-        # base 모델: 145MB, CPU int8 최적화
-        _whisper_model = WhisperModel("base", device="cpu", compute_type="int8")
-    return _whisper_model
-
-
 def _whisper_transcribe(video_id: str) -> tuple[str, str]:
-    """yt-dlp로 오디오 다운로드 후 faster-whisper로 로컬 음성인식."""
+    """yt-dlp로 오디오 다운로드 후 OpenAI Whisper API로 음성인식."""
     import yt_dlp
+    from openai import OpenAI
+
+    client = OpenAI(api_key=settings.openai_api_key)
 
     with tempfile.TemporaryDirectory() as tmpdir:
         ydl_opts = {
@@ -76,11 +69,10 @@ def _whisper_transcribe(video_id: str) -> tuple[str, str]:
         if not files:
             raise ValueError("오디오 다운로드 실패")
 
-        model = _get_whisper_model()
-        segments, _ = model.transcribe(files[0], beam_size=5)
-        transcript = " ".join(seg.text for seg in segments)
+        with open(files[0], "rb") as f:
+            result = client.audio.transcriptions.create(model="whisper-1", file=f)
 
-    return title, transcript
+    return title, result.text
 
 
 async def get_youtube_info(url: str) -> YoutubeResult:
@@ -95,7 +87,7 @@ async def get_youtube_info(url: str) -> YoutubeResult:
     if transcript:
         return {"video_id": video_id, "title": "", "transcript": transcript, "thumbnail_url": thumbnail_url}
 
-    # 2단계: 자막 없으면 Whisper 음성인식 (느리지만 확실)
+    # 2단계: 자막 없으면 OpenAI Whisper 음성인식
     title, transcript = await asyncio.to_thread(_whisper_transcribe, video_id)
     if not transcript:
         raise ValueError("음성 인식 결과가 없습니다")
