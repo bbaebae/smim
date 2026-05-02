@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     stripe_price_annual: str = ""
     openai_api_key: str = ""
     youtube_proxy: str = ""
+    youtube_cookies_b64: str = ""
 
     model_config = {"env_file": ".env", "case_sensitive": False}
 

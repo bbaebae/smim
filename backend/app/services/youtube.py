@@ -1,5 +1,7 @@
 import asyncio
+import base64
 import glob
+import os
 import re
 import tempfile
 from typing import TypedDict
@@ -22,10 +24,29 @@ def _extract_video_id(url: str) -> str | None:
     return match.group(1) if match else None
 
 
+def _get_cookies_file() -> str | None:
+    """YOUTUBE_COOKIES_B64 env var에서 cookies.txt를 /tmp에 디코딩해 경로 반환."""
+    b64 = settings.youtube_cookies_b64
+    if not b64:
+        return None
+    path = "/tmp/youtube_cookies.txt"
+    if not os.path.exists(path):
+        with open(path, "wb") as f:
+            f.write(base64.b64decode(b64))
+    return path
+
+
 def _fetch_transcript(video_id: str) -> str:
+    proxies = {"https": settings.youtube_proxy} if settings.youtube_proxy else None
+    cookies = _get_cookies_file()
+
     for lang in (["ko"], ["ja"], ["en"], None):
         try:
-            kwargs = {"languages": lang} if lang else {}
+            kwargs: dict = {"languages": lang} if lang else {}
+            if proxies:
+                kwargs["proxies"] = proxies
+            if cookies:
+                kwargs["cookies"] = cookies
             segments = YouTubeTranscriptApi.get_transcript(video_id, **kwargs)
             return " ".join(s["text"] for s in segments)
         except (NoTranscriptFound, TranscriptsDisabled):
@@ -34,7 +55,12 @@ def _fetch_transcript(video_id: str) -> str:
             continue
 
     try:
-        for t in YouTubeTranscriptApi.list_transcripts(video_id):
+        list_kwargs: dict = {}
+        if proxies:
+            list_kwargs["proxies"] = proxies
+        if cookies:
+            list_kwargs["cookies"] = cookies
+        for t in YouTubeTranscriptApi.list_transcripts(video_id, **list_kwargs):
             try:
                 return " ".join(s["text"] for s in t.fetch())
             except Exception:
@@ -66,24 +92,35 @@ def _parse_vtt(content: str) -> str:
     return " ".join(result)
 
 
+def _build_ydl_base_opts(extra: dict | None = None) -> dict:
+    opts = {
+        "quiet": True,
+        "no_warnings": True,
+        "extractor_args": {"youtube": {"player_client": ["android_testsuite", "ios", "tv_embedded"]}},
+    }
+    if settings.youtube_proxy:
+        opts["proxy"] = settings.youtube_proxy
+    cookies = _get_cookies_file()
+    if cookies:
+        opts["cookiefile"] = cookies
+    if extra:
+        opts.update(extra)
+    return opts
+
+
 def _fetch_subtitle_ytdlp(video_id: str) -> str:
     """yt-dlp로 자막 다운로드 (자동 생성 포함). API 키 불필요."""
     import yt_dlp
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        ydl_opts = {
+        ydl_opts = _build_ydl_base_opts({
             "skip_download": True,
             "writesubtitles": True,
             "writeautomaticsub": True,
             "subtitleslangs": ["ko", "en", "ja"],
             "subtitlesformat": "vtt",
             "outtmpl": f"{tmpdir}/sub",
-            "quiet": True,
-            "no_warnings": True,
-            "extractor_args": {"youtube": {"player_client": ["ios", "tv_embedded"]}},
-        }
-        if settings.youtube_proxy:
-            ydl_opts["proxy"] = settings.youtube_proxy
+        })
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
@@ -123,15 +160,10 @@ def _whisper_transcribe(video_id: str) -> tuple[str, str]:
     client = OpenAI(api_key=settings.openai_api_key)
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        ydl_opts = {
+        ydl_opts = _build_ydl_base_opts({
             "format": "bestaudio[ext=m4a]/bestaudio[ext=webm]/bestaudio[ext=mp3]/bestaudio/best",
             "outtmpl": f"{tmpdir}/audio.%(ext)s",
-            "quiet": True,
-            "no_warnings": True,
-            "extractor_args": {"youtube": {"player_client": ["ios", "tv_embedded"]}},
-        }
-        if settings.youtube_proxy:
-            ydl_opts["proxy"] = settings.youtube_proxy
+        })
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(
