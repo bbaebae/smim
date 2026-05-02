@@ -76,7 +76,7 @@ const LOADING_STEPS: Record<Tab, string[]> = {
   file:    ['파일을 읽는 중...', '텍스트를 추출하는 중...', 'AI가 분석하는 중...', '요약을 작성하는 중...'],
 }
 
-function AnalyzingOverlay({ tab }: { tab: Tab }) {
+function AnalyzingCard({ tab }: { tab: Tab }) {
   const steps = LOADING_STEPS[tab]
   const [stepIdx, setStepIdx] = useState(0)
 
@@ -88,40 +88,38 @@ function AnalyzingOverlay({ tab }: { tab: Tab }) {
   }, [steps.length])
 
   return (
-    <div className="flex flex-col items-center justify-center py-10 gap-5">
-      {/* 스피너 */}
-      <div className="relative w-12 h-12">
-        <div className="absolute inset-0 rounded-full border-[3px] border-[#132175]/10" />
-        <div className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-[#132175] animate-spin" />
+    <div className="flex items-center gap-4 rounded-2xl border border-[#132175]/20 bg-[#132175]/5 p-4 ambient-shadow">
+      {/* 아이콘 + 스피너 */}
+      <div className="relative h-16 w-16 shrink-0">
+        <div className="absolute inset-0 rounded-lg border-[2.5px] border-[#132175]/10" />
+        <div className="absolute inset-0 rounded-lg border-[2.5px] border-transparent border-t-[#132175] animate-spin" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="material-symbols-outlined text-[18px] text-[#132175]">auto_awesome</span>
+          <span className="material-symbols-outlined text-[22px] text-[#132175]">auto_awesome</span>
         </div>
       </div>
 
-      {/* 단계 메시지 */}
-      <div className="text-center space-y-1.5">
-        <p className="text-[14px] font-semibold text-[#1b1c1c]">{steps[stepIdx]}</p>
-        <div className="flex items-center justify-center gap-1.5">
+      {/* 텍스트 */}
+      <div className="min-w-0 flex-1 space-y-2">
+        <p className="text-[13px] font-semibold text-[#132175]">{steps[stepIdx]}</p>
+        <div className="flex items-center gap-1">
           {steps.map((_, i) => (
             <span
               key={i}
-              className={`block h-1.5 rounded-full transition-all duration-500 ${
-                i <= stepIdx ? 'w-4 bg-[#132175]' : 'w-1.5 bg-[#c6c5d3]'
+              className={`block h-1 rounded-full transition-all duration-500 ${
+                i <= stepIdx ? 'w-5 bg-[#132175]' : 'w-2 bg-[#c6c5d3]'
               }`}
             />
           ))}
         </div>
+        <p className="text-[11px] text-[#767683]">
+          {tab === 'youtube' ? '영상 길이에 따라 30초~1분 소요될 수 있어요' : '보통 10~20초 걸려요'}
+        </p>
       </div>
-
-      {/* 소요 시간 안내 */}
-      <p className="text-[12px] text-[#767683]">
-        {tab === 'youtube' ? '영상 길이에 따라 30초~1분 소요될 수 있어요' : '보통 10~20초 걸려요'}
-      </p>
     </div>
   )
 }
 
-function AddContentInline() {
+function AddContentInline({ onAnalyzing }: { onAnalyzing: (tab: Tab | null) => void }) {
   const router = useRouter()
   const [tab, setTab] = useState<Tab>('article')
   const [url, setUrl] = useState('')
@@ -151,6 +149,7 @@ function AddContentInline() {
     e.preventDefault()
     setUpgradeNeeded(false)
     setLoading(true)
+    onAnalyzing(tab)
     try {
       let res: Response
       if (tab === 'file') {
@@ -182,6 +181,7 @@ function AddContentInline() {
       showError('network')
     } finally {
       setLoading(false)
+      onAnalyzing(null)
     }
   }
 
@@ -209,11 +209,8 @@ function AddContentInline() {
         ))}
       </div>
 
-      {/* 분석 중 오버레이 */}
-      {loading && <AnalyzingOverlay tab={tab} />}
-
       {/* 폼 */}
-      <form onSubmit={handleSubmit} className={`p-5 space-y-3 ${loading ? 'hidden' : ''}`}>
+      <form onSubmit={handleSubmit} className="p-5 space-y-3">
         {(tab === 'article' || tab === 'youtube') && (
           <>
             <div className="relative">
@@ -307,6 +304,7 @@ function AddContentInline() {
 }
 
 export default function DashboardClient({ contents, reviewCount }: Props) {
+  const [analyzingTab, setAnalyzingTab] = useState<Tab | null>(null)
   const categoryMap = contents.reduce<Record<string, number>>((acc, c) => {
     acc[c.category] = (acc[c.category] ?? 0) + 1
     return acc
@@ -345,7 +343,7 @@ export default function DashboardClient({ contents, reviewCount }: Props) {
       )}
 
       {/* 새 콘텐츠 추가 인라인 */}
-      <AddContentInline />
+      <AddContentInline onAnalyzing={setAnalyzingTab} />
 
       {/* 통계 */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -427,19 +425,20 @@ export default function DashboardClient({ contents, reviewCount }: Props) {
       )}
 
       {/* 최근 저장 */}
-      {recent.length > 0 && (
+      {(analyzingTab || recent.length > 0) && (
         <div>
           <div className="flex items-center justify-between mb-4">
             <p className="text-[15px] font-semibold text-[#1b1c1c]">최근 저장</p>
             <Link href="/library" className="text-[12px] text-[#136299] hover:underline">전체 보기 →</Link>
           </div>
           <div className="space-y-3">
+            {analyzingTab && <AnalyzingCard tab={analyzingTab} />}
             {recent.map((item) => <ContentCard key={item.id} item={item} />)}
           </div>
         </div>
       )}
 
-      {contents.length === 0 && (
+      {!analyzingTab && contents.length === 0 && (
         <div className="py-12 text-center">
           <span className="material-symbols-outlined text-[48px] text-[#c6c5d3] block mb-3">inbox</span>
           <p className="text-[15px] font-semibold text-[#454651] mb-1">아직 저장된 콘텐츠가 없어요</p>
