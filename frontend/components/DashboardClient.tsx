@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import ContentCard, { ContentItem } from './ContentCard'
@@ -66,6 +66,58 @@ function RecommendCard({ item }: { item: ContentItem }) {
         </p>
       </div>
     </Link>
+  )
+}
+
+const LOADING_STEPS: Record<Tab, string[]> = {
+  article: ['페이지를 읽는 중...', '본문을 추출하는 중...', 'AI가 분석하는 중...', '요약을 작성하는 중...'],
+  youtube: ['영상 정보를 가져오는 중...', '자막을 처리하는 중...', 'AI가 분석하는 중...', '요약을 작성하는 중...'],
+  text:    ['AI가 분석하는 중...', '요약을 작성하는 중...'],
+  file:    ['파일을 읽는 중...', '텍스트를 추출하는 중...', 'AI가 분석하는 중...', '요약을 작성하는 중...'],
+}
+
+function AnalyzingOverlay({ tab }: { tab: Tab }) {
+  const steps = LOADING_STEPS[tab]
+  const [stepIdx, setStepIdx] = useState(0)
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setStepIdx((i) => (i < steps.length - 1 ? i + 1 : i))
+    }, 3500)
+    return () => clearInterval(id)
+  }, [steps.length])
+
+  return (
+    <div className="flex flex-col items-center justify-center py-10 gap-5">
+      {/* 스피너 */}
+      <div className="relative w-12 h-12">
+        <div className="absolute inset-0 rounded-full border-[3px] border-[#132175]/10" />
+        <div className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-[#132175] animate-spin" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="material-symbols-outlined text-[18px] text-[#132175]">auto_awesome</span>
+        </div>
+      </div>
+
+      {/* 단계 메시지 */}
+      <div className="text-center space-y-1.5">
+        <p className="text-[14px] font-semibold text-[#1b1c1c]">{steps[stepIdx]}</p>
+        <div className="flex items-center justify-center gap-1.5">
+          {steps.map((_, i) => (
+            <span
+              key={i}
+              className={`block h-1.5 rounded-full transition-all duration-500 ${
+                i <= stepIdx ? 'w-4 bg-[#132175]' : 'w-1.5 bg-[#c6c5d3]'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* 소요 시간 안내 */}
+      <p className="text-[12px] text-[#767683]">
+        {tab === 'youtube' ? '영상 길이에 따라 30초~1분 소요될 수 있어요' : '보통 10~20초 걸려요'}
+      </p>
+    </div>
   )
 }
 
@@ -157,8 +209,11 @@ function AddContentInline() {
         ))}
       </div>
 
+      {/* 분석 중 오버레이 */}
+      {loading && <AnalyzingOverlay tab={tab} />}
+
       {/* 폼 */}
-      <form onSubmit={handleSubmit} className="p-5 space-y-3">
+      <form onSubmit={handleSubmit} className={`p-5 space-y-3 ${loading ? 'hidden' : ''}`}>
         {(tab === 'article' || tab === 'youtube') && (
           <>
             <div className="relative">
