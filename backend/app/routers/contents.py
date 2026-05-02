@@ -43,7 +43,7 @@ async def process_content(req: ProcessRequest):
             result = await youtube.get_youtube_info(req.url)
         except ValueError as e:
             raise HTTPException(400, str(e))
-        title = req.url
+        title = result["title"] or req.url
         full_text = result["transcript"]
         thumbnail_url = result["thumbnail_url"]
 
