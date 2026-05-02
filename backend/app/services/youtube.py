@@ -36,6 +36,23 @@ def _get_cookies_file() -> str | None:
     return path
 
 
+def _format_transcript_with_timestamps(segments: list) -> str:
+    """Segment 리스트를 60초 단위로 그룹화해 '[MM:SS] text' 형식으로 반환."""
+    if not segments:
+        return ""
+    groups: dict[int, list[str]] = {}
+    for s in segments:
+        minute_start = (int(s["start"]) // 60) * 60
+        if minute_start not in groups:
+            groups[minute_start] = []
+        groups[minute_start].append(s["text"])
+    lines = []
+    for start_sec in sorted(groups.keys()):
+        text = " ".join(groups[start_sec])
+        lines.append(f"[{start_sec // 60:02d}:00] {text}")
+    return "\n".join(lines)
+
+
 def _fetch_transcript(video_id: str) -> str:
     proxies = {"https": settings.youtube_proxy} if settings.youtube_proxy else None
     cookies = _get_cookies_file()
@@ -48,7 +65,7 @@ def _fetch_transcript(video_id: str) -> str:
             if cookies:
                 kwargs["cookies"] = cookies
             segments = YouTubeTranscriptApi.get_transcript(video_id, **kwargs)
-            return " ".join(s["text"] for s in segments)
+            return _format_transcript_with_timestamps(segments)
         except (NoTranscriptFound, TranscriptsDisabled):
             continue
         except Exception:
@@ -62,7 +79,7 @@ def _fetch_transcript(video_id: str) -> str:
             list_kwargs["cookies"] = cookies
         for t in YouTubeTranscriptApi.list_transcripts(video_id, **list_kwargs):
             try:
-                return " ".join(s["text"] for s in t.fetch())
+                return _format_transcript_with_timestamps(t.fetch())
             except Exception:
                 continue
     except Exception:
@@ -72,24 +89,44 @@ def _fetch_transcript(video_id: str) -> str:
 
 
 def _parse_vtt(content: str) -> str:
-    """VTT 자막 텍스트 추출. YouTube 자동생성 자막의 rolling window 중복 제거."""
-    text_lines = []
-    for line in content.split("\n"):
-        line = line.strip()
-        if not line or line.startswith("WEBVTT") or line.startswith("NOTE") or "-->" in line:
-            continue
-        line = re.sub(r"<[^>]+>", "", line).strip()
-        if line:
-            text_lines.append(line)
+    """VTT 자막 파싱. 타임스탬프 포함 60초 단위 그룹화."""
+    segments: list[dict] = []
+    lines = content.split("\n")
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        if "-->" in line:
+            time_str = line.split("-->")[0].strip()
+            parts = time_str.replace(",", ".").split(":")
+            try:
+                if len(parts) == 3:
+                    start_sec = int(parts[0]) * 3600 + int(parts[1]) * 60 + float(parts[2])
+                elif len(parts) == 2:
+                    start_sec = int(parts[0]) * 60 + float(parts[1])
+                else:
+                    start_sec = 0.0
+            except (ValueError, IndexError):
+                start_sec = 0.0
+            i += 1
+            text_parts = []
+            while i < len(lines) and lines[i].strip():
+                text_line = re.sub(r"<[^>]+>", "", lines[i].strip()).strip()
+                if text_line:
+                    text_parts.append(text_line)
+                i += 1
+            if text_parts:
+                segments.append({"start": start_sec, "text": " ".join(text_parts)})
+        else:
+            i += 1
 
-    # Rolling window 중복 제거: 현재 줄이 다음 줄의 앞부분이면 스킵
-    result = []
-    for i, line in enumerate(text_lines):
-        if i < len(text_lines) - 1 and text_lines[i + 1].startswith(line):
+    # Rolling window 중복 제거
+    deduped = []
+    for idx, seg in enumerate(segments):
+        if idx < len(segments) - 1 and segments[idx + 1]["text"].startswith(seg["text"]):
             continue
-        result.append(line)
+        deduped.append(seg)
 
-    return " ".join(result)
+    return _format_transcript_with_timestamps(deduped)
 
 
 def _build_ydl_base_opts(extra: dict | None = None) -> dict:

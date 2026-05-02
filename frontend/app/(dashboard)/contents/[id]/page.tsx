@@ -100,8 +100,25 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
         </section>
       )}
 
+      {/* 유튜브 임베드 */}
+      {content.type === 'youtube' && content.url && (() => {
+        const match = (content.url as string).match(/(?:v=|youtu\.be\/)([^&\n?#]+)/)
+        const videoId = match?.[1]
+        if (!videoId) return null
+        return (
+          <div className="rounded-2xl overflow-hidden mb-6 aspect-video">
+            <iframe
+              src={`https://www.youtube.com/embed/${videoId}`}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        )
+      })()}
+
       {/* 요약 / 원문 / AI 채팅 탭 */}
-      <ContentTabs summary={content.summary} fullText={content.full_text ?? null} />
+      <ContentTabs summary={content.summary} fullText={content.full_text ?? null} contentType={content.type} />
     </div>
   )
 }
