@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     stripe_price_pro: str = ""
     stripe_price_annual: str = ""
     openai_api_key: str = ""
+    youtube_proxy: str = ""
 
     model_config = {"env_file": ".env", "case_sensitive": False}
 

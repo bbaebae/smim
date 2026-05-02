@@ -80,8 +80,10 @@ def _fetch_subtitle_ytdlp(video_id: str) -> str:
             "outtmpl": f"{tmpdir}/sub",
             "quiet": True,
             "no_warnings": True,
-            "extractor_args": {"youtube": {"player_client": ["tv_embedded", "android"]}},
+            "extractor_args": {"youtube": {"player_client": ["ios", "tv_embedded"]}},
         }
+        if settings.youtube_proxy:
+            ydl_opts["proxy"] = settings.youtube_proxy
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
@@ -126,8 +128,10 @@ def _whisper_transcribe(video_id: str) -> tuple[str, str]:
             "outtmpl": f"{tmpdir}/audio.%(ext)s",
             "quiet": True,
             "no_warnings": True,
-            "extractor_args": {"youtube": {"player_client": ["tv_embedded", "android"]}},
+            "extractor_args": {"youtube": {"player_client": ["ios", "tv_embedded"]}},
         }
+        if settings.youtube_proxy:
+            ydl_opts["proxy"] = settings.youtube_proxy
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(
