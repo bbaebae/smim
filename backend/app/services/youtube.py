@@ -96,7 +96,6 @@ def _build_ydl_base_opts(extra: dict | None = None) -> dict:
     opts = {
         "quiet": True,
         "no_warnings": True,
-        "extractor_args": {"youtube": {"player_client": ["android_testsuite", "ios", "tv_embedded"]}},
     }
     if settings.youtube_proxy:
         opts["proxy"] = settings.youtube_proxy
