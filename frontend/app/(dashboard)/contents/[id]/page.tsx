@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import ContentTabs from '@/components/ContentTabs'
+import DeleteButton from '@/components/DeleteButton'
 
 export default async function ContentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -28,14 +29,17 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div className="px-6 py-8 max-w-3xl">
-      {/* 뒤로가기 */}
-      <Link
-        href="/library"
-        className="inline-flex items-center gap-1 text-[13px] text-[#767683] hover:text-[#132175] transition-colors mb-6"
-      >
-        <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-        라이브러리
-      </Link>
+      {/* 헤더: 뒤로가기 + 삭제 */}
+      <div className="flex items-center justify-between mb-6">
+        <Link
+          href="/library"
+          className="inline-flex items-center gap-1 text-[13px] text-[#767683] hover:text-[#132175] transition-colors"
+        >
+          <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+          라이브러리
+        </Link>
+        <DeleteButton contentId={content.id} />
+      </div>
 
       {/* 썸네일 */}
       {content.thumbnail_url && (

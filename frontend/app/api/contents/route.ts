@@ -86,3 +86,32 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ error: '인증이 필요합니다' }, { status: 401 })
+
+    const { ids } = await request.json() as { ids: string[] }
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return NextResponse.json({ error: 'ids가 필요합니다' }, { status: 400 })
+    }
+
+    await supabase.from('review_schedule').delete().in('content_id', ids).eq('user_id', user.id)
+
+    const { error } = await supabase
+      .from('contents')
+      .delete()
+      .in('id', ids)
+      .eq('user_id', user.id)
+
+    if (error) throw error
+
+    return NextResponse.json({ success: true })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : '서버 오류가 발생했습니다'
+    console.error(err)
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
+}
