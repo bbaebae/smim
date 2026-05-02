@@ -33,11 +33,21 @@ def _is_notion_url(url: str) -> bool:
 
 
 def _extract_notion_page_id(url: str) -> str | None:
-    match = re.search(r"([a-f0-9]{32})(?:[?#]|$)", url)
-    if not match:
-        return None
-    raw = match.group(1)
-    return f"{raw[:8]}-{raw[8:12]}-{raw[12:16]}-{raw[16:20]}-{raw[20:]}"
+    # 32자 연속 hex (URL 뒤에 /, ?, #, 문자열 끝 허용)
+    match = re.search(r"([a-f0-9]{32})(?:[/?#]|$)", url, re.IGNORECASE)
+    if match:
+        raw = match.group(1).lower()
+        return f"{raw[:8]}-{raw[8:12]}-{raw[12:16]}-{raw[16:20]}-{raw[20:]}"
+
+    # UUID 형식이 그대로 URL에 있는 경우
+    match = re.search(
+        r"([a-f0-9]{8})-([a-f0-9]{4})-([a-f0-9]{4})-([a-f0-9]{4})-([a-f0-9]{12})(?:[/?#]|$)",
+        url, re.IGNORECASE,
+    )
+    if match:
+        return "-".join(g.lower() for g in match.groups())
+
+    return None
 
 
 def _rich_text_to_str(rich_text: list) -> str:
@@ -110,9 +120,13 @@ def _fetch_html(url: str) -> tuple[str, str]:
 async def scrape_article(url: str) -> ScrapeResult:
     if _is_notion_url(url):
         page_id = _extract_notion_page_id(url)
-        if page_id:
+        if not page_id:
+            raise ValueError(f"Notion URL에서 페이지 ID를 추출할 수 없습니다: {url}")
+        try:
             text, title = await asyncio.to_thread(_fetch_notion, page_id)
-            return {"title": title or url, "text": text}
+        except Exception as e:
+            raise ValueError(f"Notion 페이지 불러오기 실패: {e}") from e
+        return {"title": title or url, "text": text}
 
     html, page_title = await asyncio.to_thread(_fetch_html, url)
 
