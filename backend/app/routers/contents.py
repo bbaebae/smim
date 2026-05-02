@@ -79,20 +79,10 @@ async def process_file(file: UploadFile = File(...)):
     full_text = ""
 
     if filename.endswith(".pdf"):
-        import unicodedata
         import fitz  # PyMuPDF
         doc = fitz.open(stream=data, filetype="pdf")
-        pages = [page.get_text("text") for page in doc]
+        full_text = "\n".join(page.get_text("text") for page in doc)
         doc.close()
-        raw = "\n".join(pages)
-        # PUA(아이콘 폰트) 문자 제거 후 빈 줄 정리
-        cleaned_lines = []
-        for line in raw.splitlines():
-            line = "".join(c for c in line if unicodedata.category(c) != "Co")
-            line = line.strip()
-            if line:
-                cleaned_lines.append(line)
-        full_text = "\n".join(cleaned_lines)
     elif filename.endswith((".txt", ".md")):
         full_text = data.decode("utf-8", errors="replace")
     else:
