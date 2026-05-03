@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: #fff; font-family: var(--font-primary); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .swatch { flex: 1; min-width: 80px; border-radius: 4px; overflow: hidden; }
+  .swatch-color { height: 56px; }
+  .swatch-info { padding: 6px 8px; }
+  .swatch-name { font-size: 11px; font-weight: 500; color: #061b31; font-feature-settings: "ss01"; line-height: 1.3; }
+  .swatch-hex  { font-size: 10px; color: #64748d; font-family: 'Source Code Pro', monospace; margin-top: 2px; }
+  .swatch-role { font-size: 10px; color: #64748d; font-feature-settings: "ss01"; margin-top: 1px; }
+  .section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #64748d; margin-bottom: 8px; font-feature-settings: "ss01"; }
+  .gap { height: 14px; }
+  .gradient-bar { height: 56px; border-radius: 4px; background: linear-gradient(135deg, #ea2261, #f96bee); margin-bottom: 8px; }
+  .gradient-label { font-size: 11px; font-weight: 500; color: #061b31; font-feature-settings: "ss01"; }
+  .gradient-sub { font-size: 10px; color: #64748d; font-family: 'Source Code Pro', monospace; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="section-label">Decorative Accents (non-interactive)</div>
+<div class="row">
+  <div class="swatch">
+    <div class="swatch-color" style="background:#ea2261;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Ruby</div>
+      <div class="swatch-hex">#ea2261</div>
+      <div class="swatch-role">Gradient start · Icons</div>
+    </div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#f96bee;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Magenta</div>
+      <div class="swatch-hex">#f96bee</div>
+      <div class="swatch-role">Gradient end · Highlight</div>
+    </div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#ffd7ef;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Magenta Light</div>
+      <div class="swatch-hex">#ffd7ef</div>
+      <div class="swatch-role">Tinted badge surface</div>
+    </div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#15be53;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Success</div>
+      <div class="swatch-hex">#15be53</div>
+      <div class="swatch-role">Status · Badge</div>
+    </div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#108c3d;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Success Text</div>
+      <div class="swatch-hex">#108c3d</div>
+      <div class="swatch-role">Badge text</div>
+    </div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#9b6829;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Lemon</div>
+      <div class="swatch-hex">#9b6829</div>
+      <div class="swatch-role">Warning accent</div>
+    </div>
+  </div>
+</div>
+<div class="gap"></div>
+<div class="gradient-bar"></div>
+<div class="gradient-label">Signature Gradient — Ruby → Magenta</div>
+<div class="gradient-sub">#ea2261 → #f96bee · decorative hero accents only</div>
+</body>
+</html>

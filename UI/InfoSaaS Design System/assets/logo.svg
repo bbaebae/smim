@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" fill="none">
+  <rect width="160" height="40" fill="#ffffff"></rect>
+  
+  <text x="8" y="27" font-family="&#39;DM Sans&#39;, sans-serif" font-size="18" font-weight="500" letter-spacing="-0.4" fill="#061b31">Info</text>
+  <text x="48" y="27" font-family="&#39;DM Sans&#39;, sans-serif" font-size="18" font-weight="500" letter-spacing="-0.4" fill="#533afd">SaaS</text>
+  
+  <rect x="8" y="32" width="12" height="2" rx="1" fill="#533afd" opacity="0.4"></rect>
+</svg>

@@ -85,7 +85,9 @@
       "Bash(git -C /Users/bbaebae/Desktop/program/smim diff origin/main HEAD --name-only)",
       "Bash(git -C /Users/bbaebae/Desktop/program/smim status)",
       "Bash(git -C /Users/bbaebae/Desktop/program/smim show 039c725 --name-only --stat)",
-      "Bash(git -C /Users/bbaebae/Desktop/program/smim add -A)"
+      "Bash(git -C /Users/bbaebae/Desktop/program/smim add -A)",
+      "Bash(gh run *)",
+      "Bash(gh deployment *)"
     ],
     "additionalDirectories": [
       "/Users/bbaebae/Desktop/program/smim/frontend/app/(dashboard)/contents",

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스밈 — 지식이 스며드는 곳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { height: 100%; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #fbf9f8;
+    color: #1b1c1c;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, textarea { font-family: inherit; }
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    user-select: none; line-height: 1;
+    font-style: normal;
+    display: inline-block;
+    font-feature-settings: 'liga';
+    -webkit-font-feature-settings: 'liga';
+  }
+  .mat-fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  /* Catch all inline Material Symbols spans */
+  span[style*="Material Symbols Outlined"] {
+    font-feature-settings: 'liga' 1;
+    -webkit-font-feature-settings: 'liga' 1;
+    font-style: normal;
+    display: inline-block;
+    line-height: 1;
+    user-select: none;
+  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: #e4e2e2; border-radius: 4px; }
+  .ambient-shadow { box-shadow: 0 2px 8px rgba(19,33,117,0.06), 0 1px 2px rgba(19,33,117,0.04); }
+  .ambient-shadow-hover { box-shadow: 0 4px 16px rgba(19,33,117,0.10), 0 2px 4px rgba(19,33,117,0.06); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+// ─── Sample data ────────────────────────────────────────────
+const CONTENTS = [
+  { id:'1', type:'article', title:'에빙하우스 망각 곡선과 간격 반복 학습의 과학적 근거', summary:'기억은 시간이 지남에 따라 지수적으로 감소하며, 최적의 복습 간격을 통해 장기 기억으로 전환할 수 있다.', category:'기술/개발', tags:['학습','기억'], thumbnail_url:null, created_at:'2026-04-24' },
+  { id:'2', type:'youtube', title:'Y Combinator — 스타트업 아이디어를 찾는 방법 (폴 그레이엄)', summary:'좋은 아이디어는 자신이 직접 겪은 문제에서 나온다. 시장 조사보다 자신의 경험을 믿어라.', category:'비즈니스/마케팅', tags:['스타트업','YC'], thumbnail_url:null, created_at:'2026-04-23' },
+  { id:'3', type:'instagram', title:'생산성 루틴 카드뉴스 — 아침 2시간의 법칙', summary:'기상 후 첫 2시간 동안 가장 중요한 작업에 집중하면 하루 전체 생산성이 40% 향상된다.', category:'라이프스타일', tags:['생산성','루틴'], thumbnail_url:null, created_at:'2026-04-22' },
+  { id:'4', type:'article', title:'Next.js 14 App Router 완전 가이드', summary:'서버 컴포넌트, 스트리밍, 중첩 레이아웃을 활용해 더 빠른 웹 앱을 만드는 방법을 설명한다.', category:'기술/개발', tags:['Next.js','React'], thumbnail_url:null, created_at:'2026-04-21' },
+  { id:'5', type:'file', title:'투자 원칙 — 워런 버핏 연례 서한 2025', summary:'장기 투자의 핵심은 훌륭한 기업을 적정 가격에 사서 보유하는 것. 시장 변동성에 흔들리지 마라.', category:'투자/경제', tags:['투자','버핏'], thumbnail_url:null, created_at:'2026-04-20' },
+  { id:'6', type:'text', title:'독서 노트 — 마스터리 (로버트 그린)', summary:'진정한 마스터리는 1만 시간이 아니라 깊이 있는 관찰과 내면화를 통해 얻어진다.', category:'라이프스타일', tags:['독서','성장'], thumbnail_url:null, created_at:'2026-04-19' },
+];
+
+const REVIEW_ITEMS = [
+  { id:'r1', content_id:'1', contents: { title:'에빙하우스 망각 곡선과 간격 반복 학습의 과학적 근거', summary:'기억은 시간이 지남에 따라 지수적으로 감소하며, 최적의 복습 간격을 통해 장기 기억으로 전환할 수 있다. SM-2 알고리즘은 이 간격을 자동으로 계산해 망각 직전에 복습을 유도한다.', category:'기술/개발', tags:['학습','기억'], type:'article' }, interval_days:1, review_count:0 },
+  { id:'r2', content_id:'2', contents: { title:'Y Combinator — 스타트업 아이디어를 찾는 방법', summary:'좋은 아이디어는 자신이 직접 겪은 문제에서 나온다. 시장 조사보다 자신의 경험을 믿어라. 10명을 열광시키는 것이 100만 명을 만족시키는 것보다 중요하다.', category:'비즈니스/마케팅', tags:['스타트업'], type:'youtube' }, interval_days:1, review_count:0 },
+  { id:'r3', content_id:'5', contents: { title:'투자 원칙 — 워런 버핏 연례 서한 2025', summary:'장기 투자의 핵심은 훌륭한 기업을 적정 가격에 사서 보유하는 것. 시장 변동성에 흔들리지 마라. 복리의 힘을 믿고 인내하라.', category:'투자/경제', tags:['투자','버핏'], type:'file' }, interval_days:1, review_count:0 },
+];
+
+// ─── Type icons & labels ─────────────────────────────────────
+const TYPE_ICON = { article:'link', youtube:'smart_display', instagram:'photo_camera', text:'notes', file:'upload_file' };
+const TYPE_LABEL = { article:'아티클', youtube:'YouTube', instagram:'Instagram', text:'텍스트', file:'파일' };
+const CATEGORIES = ['전체', '기술/개발', '비즈니스/마케팅', '투자/경제', '라이프스타일', '기타'];
+
+// ─── Sidebar ─────────────────────────────────────────────────
+const Sidebar = ({ screen, setScreen }) => {
+  const items = [
+    { id:'dashboard', icon:'grid_view', label:'홈' },
+    { id:'review', icon:'psychology_alt', label:'복습' },
+    { id:'library', icon:'book_2', label:'라이브러리' },
+  ];
+  return (
+    <>
+      {/* Desktop */}
+      <nav style={{ width:224, flexShrink:0, background:'#f5f3f3', borderRight:'1px solid #e4e2e2', display:'flex', flexDirection:'column', height:'100%', padding:16 }}>
+        {/* Logo */}
+        <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:32, padding:'4px 8px' }}>
+          <div style={{ width:36, height:36, borderRadius:8, background:'#2d3a8c', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+            <span style={{ color:'#fff', fontSize:15, fontWeight:700 }}>스</span>
+          </div>
+          <div>
+            <div style={{ fontSize:15, fontWeight:700, color:'#132175', letterSpacing:'-0.3px', lineHeight:1.2 }}>스밈</div>
+            <div style={{ fontSize:11, color:'#767683', fontWeight:400 }}>Second Brain</div>
+          </div>
+        </div>
+        {/* Nav items */}
+        <div style={{ display:'flex', flexDirection:'column', gap:2, flex:1 }}>
+          {items.map(item => {
+            const active = screen === item.id || (item.id === 'review' && screen === 'review-card');
+            return (
+              <button key={item.id} onClick={() => setScreen(item.id)} style={{
+                display:'flex', alignItems:'center', gap:10, padding:'8px 12px', borderRadius:8, border:'none', cursor:'pointer',
+                background: active ? '#fff' : 'transparent',
+                color: active ? '#132175' : '#767683',
+                fontSize:14, fontWeight: active ? 600 : 400,
+                boxShadow: active ? '0 2px 8px rgba(19,33,117,0.08)' : 'none',
+                transition:'all 120ms', textAlign:'left', width:'100%',
+              }}>
+                <span style={{ fontFamily:'Material Symbols Outlined', fontSize:20, lineHeight:1, userSelect:'none', fontVariationSettings: active ? "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24" : "'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24" }}>{item.icon}</span>
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+        {/* Footer */}
+        <div style={{ borderTop:'1px solid #e4e2e2', paddingTop:12 }}>
+          <button style={{ display:'flex', alignItems:'center', gap:10, padding:'8px 12px', borderRadius:8, border:'none', cursor:'pointer', background:'transparent', color:'#767683', fontSize:14, width:'100%', textAlign:'left' }}>
+            <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:20 }}>logout</span>
+            로그아웃
+          </button>
+        </div>
+      </nav>
+      {/* Mobile bottom nav */}
+      <nav style={{ display:'none', position:'fixed', bottom:0, left:0, right:0, background:'#fff', borderTop:'1px solid #e4e2e2', zIndex:50, justifyContent:'space-around', padding:'8px 0' }} id="mobile-nav">
+        {items.map(item => {
+          const active = screen === item.id;
+          return (
+            <button key={item.id} onClick={() => setScreen(item.id)} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2, padding:'4px 16px', border:'none', background:'transparent', cursor:'pointer', color: active ? '#132175' : '#767683' }}>
+              <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:22 }}>{item.icon}</span>
+              <span style={{ fontSize:10, fontWeight:500 }}>{item.label}</span>
+            </button>
+          );
+        })}
+      </nav>
+    </>
+  );
+};
+
+// ─── Content Card ─────────────────────────────────────────────
+const ContentCard = ({ item, onClick }) => {
+  const [hov, setHov] = React.useState(false);
+  return (
+    <div onClick={onClick} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      className={hov ? 'ambient-shadow-hover' : 'ambient-shadow'}
+      style={{ display:'flex', gap:14, borderRadius:12, background:'#fff', padding:14, border:'1px solid rgba(228,226,226,0.5)', cursor:'pointer', transition:'box-shadow 200ms' }}>
+      <div style={{ width:60, height:60, borderRadius:8, background:'#efeded', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+        <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:24, color:'#767683' }}>{TYPE_ICON[item.type] || 'article'}</span>
+      </div>
+      <div style={{ flex:1, minWidth:0 }}>
+        <div style={{ marginBottom:4 }}>
+          <span style={{ fontSize:11, fontWeight:600, letterSpacing:'0.05em', color:'#136299', textTransform:'uppercase' }}>{item.category}</span>
+        </div>
+        <div style={{ fontSize:14, fontWeight:600, color: hov ? '#132175' : '#1b1c1c', lineHeight:1.35, marginBottom:4, overflow:'hidden', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', transition:'color 150ms' }}>{item.title}</div>
+        <div style={{ fontSize:13, color:'#454651', lineHeight:1.5, overflow:'hidden', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical' }}>{item.summary}</div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Review Banner ────────────────────────────────────────────
+const ReviewBanner = ({ count, onClick }) => {
+  if (!count) return null;
+  return (
+    <div onClick={onClick} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', borderRadius:12, background:'#132175', padding:'14px 18px', color:'#fff', cursor:'pointer', marginBottom:20, transition:'opacity 150ms' }}
+      onMouseEnter={e => e.currentTarget.style.opacity='0.92'}
+      onMouseLeave={e => e.currentTarget.style.opacity='1'}>
+      <div>
+        <div style={{ fontSize:11, fontWeight:600, letterSpacing:'0.06em', textTransform:'uppercase', opacity:0.7, marginBottom:2 }}>Daily Review</div>
+        <div style={{ fontSize:18, fontWeight:700, lineHeight:1.2 }}>{count}개 복습 대기 중</div>
+      </div>
+      <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:24, opacity:0.8 }}>arrow_forward</span>
+    </div>
+  );
+};
+
+// ─── Category Filter ──────────────────────────────────────────
+const CategoryFilter = ({ selected, onChange }) => (
+  <div style={{ display:'flex', gap:6, overflowX:'auto', paddingBottom:2, scrollbarWidth:'none' }}>
+    {CATEGORIES.map(cat => (
+      <button key={cat} onClick={() => onChange(cat)} style={{
+        padding:'5px 12px', borderRadius:20, border: selected===cat ? 'none' : '1px solid #e4e2e2',
+        background: selected===cat ? '#132175' : '#fff',
+        color: selected===cat ? '#fff' : '#454651',
+        fontSize:13, fontWeight: selected===cat ? 600 : 400,
+        cursor:'pointer', whiteSpace:'nowrap', transition:'all 120ms', flexShrink:0,
+      }}>{cat}</button>
+    ))}
+  </div>
+);
+
+// ─── Dashboard Screen ─────────────────────────────────────────
+const DashboardScreen = ({ onReview, onAdd, onDetail }) => {
+  const [category, setCategory] = React.useState('전체');
+  const filtered = category === '전체' ? CONTENTS : CONTENTS.filter(c => c.category === category);
+  return (
+    <div style={{ flex:1, display:'flex', flexDirection:'column', minWidth:0 }}>
+      {/* Top bar */}
+      <header style={{ background:'rgba(255,255,255,0.85)', backdropFilter:'blur(12px)', borderBottom:'1px solid #e4e2e2', padding:'0 24px', height:56, display:'flex', alignItems:'center', gap:16, flexShrink:0, position:'sticky', top:0, zIndex:30 }}>
+        <div style={{ position:'relative', flex:1, maxWidth:280 }}>
+          <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, position:'absolute', left:10, top:'50%', transform:'translateY(-50%)', fontSize:18, color:'#767683' }}>search</span>
+          <input placeholder="콘텐츠 검색..." style={{ width:'100%', paddingLeft:34, paddingRight:12, paddingTop:7, paddingBottom:7, border:'1px solid #e4e2e2', borderRadius:8, fontSize:14, color:'#1b1c1c', outline:'none', background:'#f5f3f3' }} readOnly />
+        </div>
+        <div style={{ marginLeft:'auto', display:'flex', gap:8 }}>
+          <button style={{ width:36, height:36, borderRadius:'50%', border:'none', background:'transparent', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', color:'#767683' }}>
+            <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:22 }}>notifications</span>
+          </button>
+          <div style={{ width:32, height:32, borderRadius:'50%', background:'#bbc3ff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, fontWeight:600, color:'#000e5f' }}>김</div>
+        </div>
+      </header>
+      {/* Content */}
+      <div style={{ flex:1, overflowY:'auto', padding:24 }}>
+        <div style={{ maxWidth:840, margin:'0 auto' }}>
+          <ReviewBanner count={REVIEW_ITEMS.length} onClick={onReview} />
+          <div style={{ marginBottom:16 }}>
+            <CategoryFilter selected={category} onChange={setCategory} />
+          </div>
+          {filtered.length === 0 ? (
+            <div style={{ padding:'60px 0', textAlign:'center' }}>
+              <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:40, color:'#c6c5d3', display:'block', marginBottom:10 }}>inbox</span>
+              <p style={{ fontSize:14, color:'#767683' }}>{category} 콘텐츠가 없습니다</p>
+            </div>
+          ) : (
+            <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+              {filtered.map(item => <ContentCard key={item.id} item={item} onClick={() => onDetail(item)} />)}
+            </div>
+          )}
+        </div>
+      </div>
+      {/* FAB */}
+      <button onClick={onAdd} style={{
+        position:'fixed', bottom:32, right:28, zIndex:40,
+        display:'flex', alignItems:'center', gap:8,
+        padding:'12px 18px', borderRadius:9999, border:'none',
+        background:'#132175', color:'#fff', fontSize:14, fontWeight:600,
+        cursor:'pointer', boxShadow:'0 4px 12px rgba(19,33,117,0.28)',
+        transition:'background 150ms',
+      }}
+      onMouseEnter={e => e.currentTarget.style.background='#2d3a8c'}
+      onMouseLeave={e => e.currentTarget.style.background='#132175'}>
+        <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:20 }}>add</span>
+        새 콘텐츠
+      </button>
+    </div>
+  );
+};
+
+// ─── Review Screen ────────────────────────────────────────────
+const ReviewScreen = ({ onBack }) => {
+  const [idx, setIdx] = React.useState(0);
+  const [done, setDone] = React.useState(false);
+  const total = REVIEW_ITEMS.length;
+  const item = REVIEW_ITEMS[idx];
+
+  const rate = (quality) => {
+    if (idx < total - 1) setIdx(i => i + 1);
+    else setDone(true);
+  };
+
+  if (done) return (
+    <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:16, padding:40 }}>
+      <span className="material-symbols-outlined mat-fill" style={{ fontSize:56, color:'#132175' }}>check_circle</span>
+      <div style={{ fontSize:22, fontWeight:700, color:'#1b1c1c' }}>오늘 복습 완료!</div>
+      <div style={{ fontSize:14, color:'#767683' }}>모든 복습 항목을 완료했습니다. 내일 다시 확인하세요.</div>
+      <button onClick={() => { setIdx(0); setDone(false); onBack(); }} style={{ marginTop:8, padding:'10px 24px', borderRadius:8, background:'#132175', color:'#fff', border:'none', fontSize:14, fontWeight:600, cursor:'pointer' }}>홈으로</button>
+    </div>
+  );
+
+  const progress = ((idx) / total) * 100;
+
+  return (
+    <div style={{ flex:1, display:'flex', flexDirection:'column', minWidth:0 }}>
+      {/* Progress header */}
+      <header style={{ background:'rgba(255,255,255,0.85)', backdropFilter:'blur(12px)', borderBottom:'1px solid #e4e2e2', padding:'0 24px', height:56, display:'flex', alignItems:'center', gap:16, flexShrink:0 }}>
+        <button onClick={onBack} style={{ background:'none', border:'none', cursor:'pointer', color:'#767683', display:'flex', padding:4 }}>
+          <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:22 }}>arrow_back</span>
+        </button>
+        <div style={{ flex:1, display:'flex', alignItems:'center', gap:12 }}>
+          <span style={{ fontSize:13, fontWeight:600, color:'#132175', whiteSpace:'nowrap' }}>{idx + 1} / {total}</span>
+          <div style={{ flex:1, height:4, background:'#e4e2e2', borderRadius:9999, overflow:'hidden' }}>
+            <div style={{ height:'100%', background:'#132175', borderRadius:9999, width: `${((idx+1)/total)*100}%`, transition:'width 300ms ease' }} />
+          </div>
+          <span style={{ fontSize:13, color:'#767683', whiteSpace:'nowrap', display:'flex', alignItems:'center', gap:4 }}>
+            <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:16, color:'#136299' }}>local_fire_department</span>
+            4일 연속
+          </span>
+        </div>
+      </header>
+
+      {/* Card */}
+      <div style={{ flex:1, overflowY:'auto', padding:'32px 24px', display:'flex', flexDirection:'column', alignItems:'center' }}>
+        <div style={{ width:'100%', maxWidth:680 }}>
+          <div className="ambient-shadow" style={{ background:'#fff', borderRadius:16, border:'1px solid rgba(228,226,226,0.5)', padding:32, marginBottom:24 }}>
+            {/* Tags */}
+            <div style={{ display:'flex', gap:6, marginBottom:20, flexWrap:'wrap' }}>
+              {item.contents.category && (
+                <span style={{ background:'rgba(19,98,153,0.1)', color:'#136299', fontSize:11, fontWeight:600, letterSpacing:'0.05em', textTransform:'uppercase', padding:'3px 10px', borderRadius:9999 }}>{item.contents.category}</span>
+              )}
+              {(item.contents.tags || []).slice(0,2).map(tag => (
+                <span key={tag} style={{ background:'#efeded', color:'#454651', fontSize:11, fontWeight:500, padding:'3px 10px', borderRadius:9999, border:'1px solid #e4e2e2' }}>{tag}</span>
+              ))}
+            </div>
+            {/* Title */}
+            <h2 style={{ fontSize:22, fontWeight:600, color:'#1b1c1c', lineHeight:1.35, marginBottom:20, letterSpacing:'-0.01em' }}>{item.contents.title}</h2>
+            {/* Divider */}
+            <div style={{ height:1, background:'#e4e2e2', marginBottom:20 }} />
+            {/* Summary */}
+            <p style={{ fontSize:16, lineHeight:1.65, color:'#454651' }}>{item.contents.summary}</p>
+          </div>
+
+          {/* Rating buttons */}
+          <div style={{ display:'flex', gap:10, justifyContent:'center' }}>
+            <button onClick={() => rate(0)} style={{ flex:1, maxWidth:160, display:'flex', flexDirection:'column', alignItems:'center', gap:2, padding:'12px 16px', borderRadius:12, border:'none', background:'#ffdbc8', color:'#321300', cursor:'pointer', transition:'background 150ms' }}
+              onMouseEnter={e => e.currentTarget.style.background='#ffb68a'}
+              onMouseLeave={e => e.currentTarget.style.background='#ffdbc8'}>
+              <span style={{ fontSize:11, fontWeight:600, opacity:0.65, letterSpacing:'0.04em' }}>{'< 1m'}</span>
+              <span style={{ fontSize:15, fontWeight:600 }}>잊었음</span>
+            </button>
+            <button onClick={() => rate(3)} style={{ flex:1, maxWidth:160, display:'flex', flexDirection:'column', alignItems:'center', gap:2, padding:'12px 16px', borderRadius:12, border:'none', background:'#cfe5ff', color:'#001d33', cursor:'pointer', transition:'background 150ms' }}
+              onMouseEnter={e => e.currentTarget.style.background='#98cbff'}
+              onMouseLeave={e => e.currentTarget.style.background='#cfe5ff'}>
+              <span style={{ fontSize:11, fontWeight:600, opacity:0.65, letterSpacing:'0.04em' }}>10m</span>
+              <span style={{ fontSize:15, fontWeight:600 }}>희미함</span>
+            </button>
+            <button onClick={() => rate(5)} style={{ flex:1, maxWidth:160, display:'flex', flexDirection:'column', alignItems:'center', gap:2, padding:'12px 16px', borderRadius:12, border:'none', background:'#132175', color:'#fff', cursor:'pointer', transition:'background 150ms', boxShadow:'0 2px 8px rgba(19,33,117,0.2)' }}
+              onMouseEnter={e => e.currentTarget.style.background='#2d3a8c'}
+              onMouseLeave={e => e.currentTarget.style.background='#132175'}>
+              <span style={{ fontSize:11, fontWeight:600, opacity:0.7, letterSpacing:'0.04em' }}>4d</span>
+              <span style={{ fontSize:15, fontWeight:600 }}>기억남</span>
+            </button>
+          </div>
+          <p style={{ textAlign:'center', marginTop:12, fontSize:13, color:'#767683' }}>Space 키로 기억남 선택</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Add Content Modal ────────────────────────────────────────
+const TABS = [
+  { id:'article', icon:'link', label:'Article URL', placeholder:'https://example.com/article', hint:'스밈이 본문, 저자, 날짜를 자동으로 추출합니다.' },
+  { id:'youtube', icon:'smart_display', label:'YouTube URL', placeholder:'https://youtube.com/watch?v=...', hint:'자막을 기반으로 핵심 내용을 요약합니다.' },
+  { id:'text',    icon:'notes', label:'Direct Text' },
+  { id:'file',    icon:'upload_file', label:'File Upload', hint:'PDF, TXT, MD 파일을 지원합니다.' },
+];
+
+const AddContentModal = ({ onClose }) => {
+  const [tab, setTab] = React.useState('article');
+  const [url, setUrl] = React.useState('');
+  const [title, setTitle] = React.useState('');
+  const [text, setText] = React.useState('');
+  const [file, setFile] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+  const activeTab = TABS.find(t => t.id === tab);
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => { setLoading(false); onClose(); }, 1400);
+  };
+
+  const inputStyle = { width:'100%', padding:'9px 12px', border:'1px solid #c6c5d3', borderRadius:8, fontSize:14, color:'#1b1c1c', outline:'none', transition:'border-color 150ms, box-shadow 150ms', background:'#fff', boxSizing:'border-box' };
+
+  return (
+    <div style={{ position:'fixed', inset:0, zIndex:50, background:'rgba(0,0,0,0.4)', display:'flex', alignItems:'flex-end', justifyContent:'center' }}
+      onClick={onClose}>
+      <div style={{ width:'100%', maxWidth:520, background:'#fff', borderRadius:'16px 16px 0 0', boxShadow:'0 -8px 32px rgba(19,33,117,0.12)', overflow:'hidden' }}
+        onClick={e => e.stopPropagation()}>
+        {/* Header */}
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'16px 20px', borderBottom:'1px solid #e4e2e2' }}>
+          <span style={{ fontSize:16, fontWeight:700, color:'#1b1c1c' }}>Add to Knowledge Base</span>
+          <button onClick={onClose} style={{ background:'none', border:'none', cursor:'pointer', color:'#767683', padding:4 }}>
+            <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:20 }}>close</span>
+          </button>
+        </div>
+        {/* Tabs */}
+        <div style={{ background:'#fbf9f8', borderBottom:'1px solid #e4e2e2', display:'flex', overflowX:'auto', scrollbarWidth:'none' }}>
+          {TABS.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)} style={{
+              display:'flex', alignItems:'center', gap:6, padding:'11px 16px',
+              fontSize:13, fontWeight:500, whiteSpace:'nowrap',
+              border:'none', borderBottom: tab===t.id ? '2px solid #132175' : '2px solid transparent',
+              background: tab===t.id ? '#fff' : 'transparent',
+              color: tab===t.id ? '#132175' : '#454651', cursor:'pointer',
+              transition:'all 120ms',
+            }}>
+              <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:16 }}>{t.icon}</span>
+              {t.label}
+            </button>
+          ))}
+        </div>
+        {/* Body */}
+        <form onSubmit={handleSave}>
+          <div style={{ padding:20, background:'#fff', display:'flex', flexDirection:'column', gap:14 }}>
+            {(tab === 'article' || tab === 'youtube') && (
+              <>
+                <div>
+                  <label style={{ display:'block', fontSize:13, color:'#454651', marginBottom:6 }}>URL을 붙여넣어 콘텐츠를 추출하세요</label>
+                  <div style={{ position:'relative' }}>
+                    <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, position:'absolute', left:10, top:'50%', transform:'translateY(-50%)', fontSize:18, color:'#767683' }}>language</span>
+                    <input type="url" placeholder={activeTab.placeholder} value={url} onChange={e => setUrl(e.target.value)}
+                      style={{ ...inputStyle, paddingLeft:34 }}
+                      onFocus={e => { e.target.style.borderColor='#136299'; e.target.style.boxShadow='0 0 0 2px rgba(19,98,153,0.1)'; }}
+                      onBlur={e => { e.target.style.borderColor='#c6c5d3'; e.target.style.boxShadow='none'; }}
+                    />
+                  </div>
+                </div>
+                {activeTab.hint && (
+                  <div style={{ display:'flex', gap:8, padding:'10px 12px', background:'#f5f3f3', borderRadius:8, border:'1px solid #e4e2e2' }}>
+                    <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:16, color:'#136299', flexShrink:0, marginTop:1 }}>info</span>
+                    <p style={{ fontSize:13, color:'#454651', lineHeight:1.5 }}>{activeTab.hint}</p>
+                  </div>
+                )}
+              </>
+            )}
+            {tab === 'text' && (
+              <>
+                <div>
+                  <label style={{ display:'block', fontSize:13, color:'#454651', marginBottom:6 }}>제목</label>
+                  <input type="text" placeholder="콘텐츠 제목" value={title} onChange={e => setTitle(e.target.value)}
+                    style={inputStyle}
+                    onFocus={e => { e.target.style.borderColor='#136299'; e.target.style.boxShadow='0 0 0 2px rgba(19,98,153,0.1)'; }}
+                    onBlur={e => { e.target.style.borderColor='#c6c5d3'; e.target.style.boxShadow='none'; }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display:'block', fontSize:13, color:'#454651', marginBottom:6 }}>내용</label>
+                  <textarea placeholder="내용을 입력하세요" value={text} onChange={e => setText(e.target.value)} rows={5}
+                    style={{ ...inputStyle, resize:'none' }}
+                    onFocus={e => { e.target.style.borderColor='#136299'; e.target.style.boxShadow='0 0 0 2px rgba(19,98,153,0.1)'; }}
+                    onBlur={e => { e.target.style.borderColor='#c6c5d3'; e.target.style.boxShadow='none'; }}
+                  />
+                </div>
+              </>
+            )}
+            {tab === 'file' && (
+              <label style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', borderRadius:12, border:'2px dashed #c6c5d3', padding:'36px 20px', cursor:'pointer', transition:'all 150ms', background:'#fbf9f8' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor='#136299'; e.currentTarget.style.background='#f5f3f3'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor='#c6c5d3'; e.currentTarget.style.background='#fbf9f8'; }}>
+                <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:36, color:'#767683', marginBottom:6 }}>upload_file</span>
+                <span style={{ fontSize:14, fontWeight:600, color:'#1b1c1c' }}>{file ? file.name : '파일 선택 또는 드래그'}</span>
+                <span style={{ fontSize:12, color:'#767683', marginTop:4 }}>{activeTab.hint}</span>
+                <input type="file" accept=".pdf,.txt,.md" style={{ display:'none' }} onChange={e => setFile(e.target.files?.[0] || null)} />
+              </label>
+            )}
+          </div>
+          {/* Footer */}
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'flex-end', gap:10, padding:'14px 20px', borderTop:'1px solid #e4e2e2', background:'#fbf9f8' }}>
+            <button type="button" onClick={onClose} style={{ padding:'8px 18px', borderRadius:8, fontSize:14, fontWeight:500, color:'#454651', border:'1px solid #c6c5d3', background:'transparent', cursor:'pointer' }}>CANCEL</button>
+            <button type="submit" disabled={loading} style={{ padding:'8px 20px', borderRadius:8, fontSize:14, fontWeight:600, background: loading ? '#4b57aa' : '#132175', color:'#fff', border:'none', cursor:'pointer', transition:'background 150ms', minWidth:80 }}>
+              {loading ? (
+                <span style={{ display:'flex', alignItems:'center', gap:6 }}>
+                  <svg width="14" height="14" viewBox="0 0 14 14" style={{ animation:'spin 0.8s linear infinite' }}><circle cx="7" cy="7" r="5" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2"/><path d="M7 2 A5 5 0 0 1 12 7" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg>
+                  분석 중...
+                </span>
+              ) : 'SAVE'}
+            </button>
+          </div>
+        </form>
+      </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+};
+
+// ─── Content Detail ───────────────────────────────────────────
+const ContentDetail = ({ item, onBack }) => (
+  <div style={{ flex:1, display:'flex', flexDirection:'column', minWidth:0 }}>
+    <header style={{ background:'rgba(255,255,255,0.85)', backdropFilter:'blur(12px)', borderBottom:'1px solid #e4e2e2', padding:'0 24px', height:56, display:'flex', alignItems:'center', gap:12, flexShrink:0 }}>
+      <button onClick={onBack} style={{ background:'none', border:'none', cursor:'pointer', color:'#767683', display:'flex', padding:4 }}>
+        <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:22 }}>arrow_back</span>
+      </button>
+      <span style={{ fontSize:14, fontWeight:600, color:'#1b1c1c', flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{item.title}</span>
+      <button style={{ background:'none', border:'none', cursor:'pointer', color:'#767683', display:'flex', padding:4 }}>
+        <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:22 }}>more_vert</span>
+      </button>
+    </header>
+    <div style={{ flex:1, overflowY:'auto', padding:'28px 24px' }}>
+      <div style={{ maxWidth:720, margin:'0 auto' }}>
+        <div style={{ display:'flex', gap:6, marginBottom:16, flexWrap:'wrap' }}>
+          <span style={{ background:'rgba(19,98,153,0.1)', color:'#136299', fontSize:11, fontWeight:600, letterSpacing:'0.05em', textTransform:'uppercase', padding:'3px 10px', borderRadius:9999 }}>{item.category}</span>
+          {(item.tags||[]).map(tag => <span key={tag} style={{ background:'#efeded', color:'#454651', fontSize:11, fontWeight:500, padding:'3px 10px', borderRadius:9999, border:'1px solid #e4e2e2' }}>{tag}</span>)}
+        </div>
+        <h1 style={{ fontSize:26, fontWeight:700, color:'#1b1c1c', lineHeight:1.3, letterSpacing:'-0.02em', marginBottom:20 }}>{item.title}</h1>
+        <div style={{ height:1, background:'#e4e2e2', marginBottom:20 }} />
+        <div style={{ fontSize:16, fontWeight:600, color:'#1b1c1c', marginBottom:10 }}>AI 요약</div>
+        <p style={{ fontSize:16, lineHeight:1.7, color:'#454651', marginBottom:28 }}>{item.summary}</p>
+        <div style={{ background:'#f5f3f3', borderRadius:10, padding:'16px 18px', border:'1px solid #e4e2e2' }}>
+          <div style={{ fontSize:12, fontWeight:600, letterSpacing:'0.04em', color:'#767683', textTransform:'uppercase', marginBottom:8 }}>원문 정보</div>
+          <div style={{ fontSize:13, color:'#454651' }}>유형: {TYPE_LABEL[item.type]} · 저장일: {item.created_at}</div>
+        </div>
+        <div style={{ display:'flex', gap:10, marginTop:24 }}>
+          <button style={{ flex:1, padding:'10px 0', borderRadius:8, background:'#132175', color:'#fff', border:'none', fontSize:14, fontWeight:600, cursor:'pointer' }}>원문 보기</button>
+          <button style={{ padding:'10px 14px', borderRadius:8, background:'transparent', color:'#454651', border:'1px solid #e4e2e2', fontSize:14, cursor:'pointer' }}>
+            <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:18 }}>share</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+// ─── Library Screen ───────────────────────────────────────────
+const LibraryScreen = ({ onDetail }) => {
+  const [search, setSearch] = React.useState('');
+  const filtered = CONTENTS.filter(c => !search || c.title.includes(search) || c.summary.includes(search));
+  return (
+    <div style={{ flex:1, display:'flex', flexDirection:'column', minWidth:0 }}>
+      <header style={{ background:'rgba(255,255,255,0.85)', backdropFilter:'blur(12px)', borderBottom:'1px solid #e4e2e2', padding:'0 24px', height:56, display:'flex', alignItems:'center', gap:12, flexShrink:0 }}>
+        <div style={{ position:'relative', flex:1 }}>
+          <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, position:'absolute', left:10, top:'50%', transform:'translateY(-50%)', fontSize:18, color:'#767683' }}>search</span>
+          <input placeholder="라이브러리 검색..." value={search} onChange={e => setSearch(e.target.value)}
+            style={{ width:'100%', paddingLeft:34, paddingRight:12, paddingTop:7, paddingBottom:7, border:'1px solid #e4e2e2', borderRadius:8, fontSize:14, color:'#1b1c1c', outline:'none', background:'#f5f3f3' }} />
+        </div>
+      </header>
+      <div style={{ flex:1, overflowY:'auto', padding:24 }}>
+        <div style={{ maxWidth:840, margin:'0 auto' }}>
+          <div style={{ fontSize:13, color:'#767683', marginBottom:14 }}>총 {filtered.length}개 항목</div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {filtered.map(item => (
+              <div key={item.id} onClick={() => onDetail(item)} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 14px', background:'#fff', borderRadius:8, border:'1px solid #e4e2e2', cursor:'pointer' }}
+                onMouseEnter={e => e.currentTarget.style.background='#f5f3f3'}
+                onMouseLeave={e => e.currentTarget.style.background='#fff'}>
+                <div style={{ width:32, height:32, borderRadius:6, background:'#efeded', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                  <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:18, color:'#767683' }}>{TYPE_ICON[item.type]}</span>
+                </div>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ fontSize:13, fontWeight:600, color:'#1b1c1c', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{item.title}</div>
+                  <div style={{ fontSize:11, color:'#767683', marginTop:1 }}>{item.category} · {item.created_at}</div>
+                </div>
+                <span style={{ fontFamily:"'Material Symbols Outlined'", fontFeatureSettings:"'liga' 1", WebkitFontFeatureSettings:"'liga' 1", fontStyle:'normal', fontWeight:'normal', fontVariationSettings:"'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24", userSelect:'none', lineHeight:1, fontSize:18, color:'#c6c5d3', flexShrink:0 }}>chevron_right</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── App ──────────────────────────────────────────────────────
+const App = () => {
+  const [screen, setScreen] = React.useState('dashboard');
+  const [showModal, setShowModal] = React.useState(false);
+  const [detail, setDetail] = React.useState(null);
+
+  const handleNav = (s) => { setDetail(null); setScreen(s); };
+
+  const handleDetail = (item) => { setDetail(item); setScreen('detail'); };
+
+  return (
+    <div style={{ display:'flex', height:'100vh', overflow:'hidden' }}>
+      <Sidebar screen={screen} setScreen={handleNav} />
+      {screen === 'dashboard' && <DashboardScreen onReview={() => setScreen('review')} onAdd={() => setShowModal(true)} onDetail={handleDetail} />}
+      {(screen === 'review' || screen === 'review-card') && <ReviewScreen onBack={() => setScreen('dashboard')} />}
+      {screen === 'library' && <LibraryScreen onDetail={handleDetail} />}
+      {screen === 'detail' && detail && <ContentDetail item={detail} onBack={() => setScreen('dashboard')} />}
+      {showModal && <AddContentModal onClose={() => setShowModal(false)} />}
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

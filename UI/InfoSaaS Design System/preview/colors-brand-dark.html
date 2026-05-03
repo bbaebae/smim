@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: #fff; font-family: var(--font-primary); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .swatch { flex: 1; min-width: 80px; border-radius: 4px; overflow: hidden; }
+  .swatch-color { height: 56px; }
+  .swatch-info { padding: 6px 8px; }
+  .swatch-name { font-size: 11px; font-weight: 500; color: #061b31; font-feature-settings: "ss01"; line-height: 1.3; }
+  .swatch-hex  { font-size: 10px; color: #64748d; font-family: 'Source Code Pro', monospace; margin-top: 2px; }
+  .swatch-role { font-size: 10px; color: #64748d; font-feature-settings: "ss01"; margin-top: 1px; }
+  .section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #64748d; margin-bottom: 8px; font-feature-settings: "ss01"; }
+  .gap { height: 14px; }
+  .dark-card { background: #1c1e54; border-radius: 6px; padding: 16px; margin-top: 14px; }
+  .dark-card .section-label { color: rgba(255,255,255,0.45); }
+  .dark-card .swatch-name { color: #fff; }
+  .dark-card .swatch-hex  { color: rgba(255,255,255,0.5); }
+  .dark-card .swatch-role { color: rgba(255,255,255,0.4); }
+</style>
+</head>
+<body>
+<div class="dark-card">
+  <div class="section-label">Brand Dark Palette</div>
+  <div class="row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1c1e54; border: 1px solid rgba(255,255,255,0.12); border-radius:4px;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Brand Dark</div>
+        <div class="swatch-hex">#1c1e54</div>
+        <div class="swatch-role">Dark sections · Footer</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#0d253d; border-radius:4px;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Dark Navy</div>
+        <div class="swatch-hex">#0d253d</div>
+        <div class="swatch-role">Deepest neutral</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.15); border-radius:4px;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">White 10%</div>
+        <div class="swatch-hex">rgba(255,255,255,.10)</div>
+        <div class="swatch-role">Cards on dark</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.10); border-radius:4px;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">White 7%</div>
+        <div class="swatch-hex">rgba(255,255,255,.07)</div>
+        <div class="swatch-role">Subtle surface</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

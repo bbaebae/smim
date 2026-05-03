@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #f0f4f8; font-family: var(--font-primary); }
+  .section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #64748d; margin-bottom: 12px; font-feature-settings: "ss01"; }
+  .shadow-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end; }
+  .shadow-card { background: #fff; border-radius: 6px; padding: 14px 16px; flex: 1; min-width: 90px; }
+  .shadow-level { font-size: 10px; font-weight: 500; color: #061b31; font-feature-settings: "ss01"; margin-bottom: 4px; }
+  .shadow-desc { font-size: 9px; color: #64748d; font-feature-settings: "ss01"; line-height: 1.4; }
+  .shadow-token { font-size: 9px; font-family: 'Source Code Pro', monospace; color: #533afd; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="section-label">Elevation System — Blue-Tinted Shadows</div>
+<div class="shadow-row">
+  <div class="shadow-card" style="box-shadow: none; border: 1px solid #e5edf5;">
+    <div class="shadow-level">Level 0 — Flat</div>
+    <div class="shadow-desc">No shadow. Page BG, inline text.</div>
+    <div class="shadow-token">--shadow-0</div>
+  </div>
+  <div class="shadow-card" style="box-shadow: rgba(23,23,23,0.06) 0px 3px 6px;">
+    <div class="shadow-level">Level 1 — Ambient</div>
+    <div class="shadow-desc">Subtle card lift, hover hints.</div>
+    <div class="shadow-token">--shadow-1</div>
+  </div>
+  <div class="shadow-card" style="box-shadow: rgba(23,23,23,0.08) 0px 15px 35px 0px;">
+    <div class="shadow-level">Level 2 — Standard</div>
+    <div class="shadow-desc">Standard cards, content panels.</div>
+    <div class="shadow-token">--shadow-2</div>
+  </div>
+  <div class="shadow-card" style="box-shadow: rgba(50,50,93,0.25) 0px 30px 45px -30px, rgba(0,0,0,0.1) 0px 18px 36px -18px;">
+    <div class="shadow-level">Level 3 — Elevated</div>
+    <div class="shadow-desc">Featured cards, dropdowns. Brand blue-tinted.</div>
+    <div class="shadow-token">--shadow-3</div>
+  </div>
+  <div class="shadow-card" style="box-shadow: rgba(3,3,39,0.25) 0px 14px 21px -14px, rgba(0,0,0,0.1) 0px 8px 17px -8px;">
+    <div class="shadow-level">Level 4 — Deep</div>
+    <div class="shadow-desc">Modals, floating panels.</div>
+    <div class="shadow-token">--shadow-4</div>
+  </div>
+</div>
+</body>
+</html>

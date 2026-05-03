@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px 24px; background: #061b31; font-family: var(--font-mono); }
+  .section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); margin-bottom: 12px; font-family: var(--font-mono); }
+  .code-block { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 16px 20px; }
+  .line { font-size: 12px; font-weight: 500; line-height: 2.0; color: rgba(255,255,255,0.85); }
+  .kw  { color: #f96bee; }
+  .str { color: #b9b9f9; }
+  .cmt { color: rgba(255,255,255,0.3); }
+  .fn  { color: #533afd; }
+  .num { color: #15be53; font-feature-settings: "tnum"; }
+  .gap { height: 12px; }
+  .label-row { display: flex; gap: 8px; margin-top: 12px; }
+  .code-label { font-size: 10px; font-weight: 500; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); }
+</style>
+</head>
+<body>
+<div class="section-label">Monospace — Source Code Pro</div>
+<div class="code-block">
+  <div class="line"><span class="cmt">// 정보 항목 생성</span></div>
+  <div class="line"><span class="kw">const</span> item = <span class="kw">await</span> <span class="fn">createInfo</span>({</div>
+  <div class="line">  title: <span class="str">"분기 보고서"</span>,</div>
+  <div class="line">  tags: [<span class="str">"재무"</span>, <span class="str">"2026"</span>],</div>
+  <div class="line">  size: <span class="num">1_204_832</span>,</div>
+  <div class="line">});</div>
+</div>
+<div class="label-row">
+  <span class="code-label">12px · weight 500 · lh 2.0</span>
+  <span class="code-label">Source Code Pro</span>
+  <span class="code-label">tnum for numbers</span>
+</div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: #fff; font-family: var(--font-primary); }
+  .section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #64748d; margin-bottom: 12px; font-feature-settings: "ss01"; }
+  .gap { height: 14px; }
+  .radius-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .radius-box { background: #f0f4f8; border: 1px solid #e5edf5; width: 64px; height: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .radius-val { font-size: 13px; font-weight: 500; color: #533afd; font-feature-settings: "ss01"; }
+  .radius-name { font-size: 9px; color: #64748d; font-feature-settings: "ss01"; margin-top: 2px; }
+  .spacing-row { display: flex; gap: 0; align-items: flex-end; }
+  .space-block { background: #533afd; opacity: 0.15; }
+  .space-label { font-size: 9px; color: #64748d; font-family: 'Source Code Pro', monospace; text-align: center; margin-top: 4px; }
+  .space-col { display: flex; flex-direction: column; align-items: center; margin-right: 8px; }
+  .space-val { font-size: 9px; color: #533afd; font-feature-settings: "ss01"; text-align: center; }
+</style>
+</head>
+<body>
+<div class="section-label">Border Radius Scale</div>
+<div class="radius-row">
+  <div>
+    <div class="radius-box" style="border-radius: 1px;">
+      <div class="radius-val">1px</div>
+      <div class="radius-name">micro</div>
+    </div>
+  </div>
+  <div>
+    <div class="radius-box" style="border-radius: 4px;">
+      <div class="radius-val">4px</div>
+      <div class="radius-name">sm · default</div>
+    </div>
+  </div>
+  <div>
+    <div class="radius-box" style="border-radius: 5px;">
+      <div class="radius-val">5px</div>
+      <div class="radius-name">md</div>
+    </div>
+  </div>
+  <div>
+    <div class="radius-box" style="border-radius: 6px;">
+      <div class="radius-val">6px</div>
+      <div class="radius-name">nav</div>
+    </div>
+  </div>
+  <div>
+    <div class="radius-box" style="border-radius: 8px;">
+      <div class="radius-val">8px</div>
+      <div class="radius-name">lg · featured</div>
+    </div>
+  </div>
+</div>
+<div class="gap"></div>
+<div class="section-label">Spacing Scale (base 8px)</div>
+<div class="spacing-row">
+  <div class="space-col">
+    <div class="space-block" style="width:16px; height:4px;"></div>
+    <div class="space-val">4</div>
+    <div class="space-label">--space-1</div>
+  </div>
+  <div class="space-col">
+    <div class="space-block" style="width:16px; height:8px;"></div>
+    <div class="space-val">8</div>
+    <div class="space-label">--space-2</div>
+  </div>
+  <div class="space-col">
+    <div class="space-block" style="width:16px; height:12px;"></div>
+    <div class="space-val">12</div>
+    <div class="space-label">--space-3</div>
+  </div>
+  <div class="space-col">
+    <div class="space-block" style="width:16px; height:16px;"></div>
+    <div class="space-val">16</div>
+    <div class="space-label">--space-4</div>
+  </div>
+  <div class="space-col">
+    <div class="space-block" style="width:16px; height:24px;"></div>
+    <div class="space-val">24</div>
+    <div class="space-label">--space-6</div>
+  </div>
+  <div class="space-col">
+    <div class="space-block" style="width:16px; height:32px;"></div>
+    <div class="space-val">32</div>
+    <div class="space-label">--space-8</div>
+  </div>
+  <div class="space-col">
+    <div class="space-block" style="width:16px; height:48px;"></div>
+    <div class="space-val">48</div>
+    <div class="space-label">--space-12</div>
+  </div>
+  <div class="space-col">
+    <div class="space-block" style="width:16px; height:64px;"></div>
+    <div class="space-val">64</div>
+    <div class="space-label">--space-16</div>
+  </div>
+</div>
+</body>
+</html>

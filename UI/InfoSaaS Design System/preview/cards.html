@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #f0f4f8; font-family: var(--font-primary); }
+  .section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #64748d; margin-bottom: 12px; font-feature-settings: "ss01"; }
+  .gap { height: 20px; }
+  .cards-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+
+  .card {
+    background: #fff; border: 1px solid #e5edf5; border-radius: 6px;
+    padding: 20px; flex: 1; min-width: 180px;
+    transition: box-shadow 180ms ease;
+  }
+  .card:hover { box-shadow: rgba(50,50,93,0.25) 0px 30px 45px -30px, rgba(0,0,0,0.1) 0px 18px 36px -18px; }
+  .card-shadow-2 { box-shadow: rgba(23,23,23,0.08) 0px 15px 35px 0px; }
+  .card-shadow-3 { box-shadow: rgba(50,50,93,0.25) 0px 30px 45px -30px, rgba(0,0,0,0.1) 0px 18px 36px -18px; }
+  .card-featured { border-radius: 8px; border-color: #061b31; }
+
+  .card-eyebrow { font-size: 10px; font-weight: 400; color: #533afd; font-feature-settings: "ss01"; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .card-title { font-size: 22px; font-weight: 300; color: #061b31; letter-spacing: -0.22px; line-height: 1.1; font-feature-settings: "ss01"; margin-bottom: 8px; }
+  .card-body { font-size: 14px; font-weight: 300; color: #64748d; line-height: 1.4; font-feature-settings: "ss01"; }
+  .card-meta { font-size: 12px; color: #64748d; font-feature-settings: "tnum"; margin-top: 12px; border-top: 1px solid #e5edf5; padding-top: 10px; font-variant-numeric: tabular-nums; }
+
+  /* Dark card */
+  .card-dark {
+    background: #1c1e54; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px;
+    padding: 20px; flex: 1; min-width: 180px;
+  }
+  .card-dark .card-title { color: #fff; }
+  .card-dark .card-body { color: rgba(255,255,255,0.65); }
+  .card-dark .card-meta { color: rgba(255,255,255,0.4); border-top-color: rgba(255,255,255,0.1); }
+</style>
+</head>
+<body>
+<div class="section-label">Card Variants</div>
+<div class="cards-row">
+  <div class="card">
+    <div class="card-eyebrow">문서</div>
+    <div class="card-title">분기 실적 보고서</div>
+    <div class="card-body">2026년 1분기 주요 지표와 팀별 성과를 요약한 문서입니다.</div>
+    <div class="card-meta">수정일: 2026-04-20 · 크기: 1.2 MB</div>
+  </div>
+  <div class="card card-shadow-2">
+    <div class="card-eyebrow">노트</div>
+    <div class="card-title">고객 인터뷰 메모</div>
+    <div class="card-body">주요 고객 3인의 피드백을 정리한 인터뷰 요약입니다.</div>
+    <div class="card-meta">수정일: 2026-04-18 · 조회 47회</div>
+  </div>
+  <div class="card card-shadow-3 card-featured">
+    <div class="card-eyebrow">주요 항목</div>
+    <div class="card-title">제품 로드맵 2026</div>
+    <div class="card-body">연간 개발 계획과 마일스톤을 정리한 핵심 문서입니다.</div>
+    <div class="card-meta">수정일: 2026-04-25 · 팀 공유</div>
+  </div>
+  <div class="card-dark">
+    <div class="card-eyebrow" style="color:#b9b9f9;">분석</div>
+    <div class="card-title">시장 분석 리포트</div>
+    <div class="card-body">경쟁사 현황과 시장 트렌드를 분석한 리포트입니다.</div>
+    <div class="card-meta">수정일: 2026-04-10 · 비공개</div>
+  </div>
+</div>
+</body>
+</html>

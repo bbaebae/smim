@@ -1,0 +1,78 @@
+/* ============================================================
+   InfoSaaS Design System — Colors & Typography
+   Inspired by Stripe HDS
+   Font substitution: DM Sans (variable) for sohne-var
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Source+Code+Pro:wght@400;500;700&display=swap');
+
+:root {
+  --c-purple:           #533afd;
+  --c-purple-hover:     #4434d4;
+  --c-purple-deep:      #2e2b8c;
+  --c-purple-light:     #b9b9f9;
+  --c-purple-mid:       #665efd;
+  --c-purple-soft:      #d6d9fc;
+  --c-purple-wash:      rgba(83, 58, 253, 0.05);
+
+  --c-heading:          #061b31;
+  --c-label:            #273951;
+  --c-body:             #64748d;
+  --c-white:            #ffffff;
+  --c-brand-dark:       #1c1e54;
+  --c-dark-navy:        #0d253d;
+
+  --c-ruby:             #ea2261;
+  --c-magenta:          #f96bee;
+  --c-magenta-light:    #ffd7ef;
+  --c-lemon:            #9b6829;
+
+  --c-success:          #15be53;
+  --c-success-text:     #108c3d;
+  --c-success-bg:       rgba(21, 190, 83, 0.2);
+  --c-success-border:   rgba(21, 190, 83, 0.4);
+
+  --c-border:           #e5edf5;
+  --c-border-purple:    #b9b9f9;
+  --c-border-soft:      #d6d9fc;
+  --c-border-magenta:   #ffd7ef;
+  --c-border-dashed:    #362baa;
+  --c-border-dark:      #061b31;
+
+  --c-shadow-brand:     rgba(50, 50, 93, 0.25);
+  --c-shadow-deep:      rgba(3, 3, 39, 0.25);
+  --c-shadow-black:     rgba(0, 0, 0, 0.1);
+  --c-shadow-ambient:   rgba(23, 23, 23, 0.08);
+  --c-shadow-soft:      rgba(23, 23, 23, 0.06);
+
+  --shadow-0: none;
+  --shadow-1: rgba(23, 23, 23, 0.06) 0px 3px 6px;
+  --shadow-2: rgba(23, 23, 23, 0.08) 0px 15px 35px 0px;
+  --shadow-3: rgba(50, 50, 93, 0.25) 0px 30px 45px -30px, rgba(0, 0, 0, 0.1) 0px 18px 36px -18px;
+  --shadow-4: rgba(3, 3, 39, 0.25) 0px 14px 21px -14px, rgba(0, 0, 0, 0.1) 0px 8px 17px -8px;
+  --shadow-focus: 0 0 0 2px #533afd;
+
+  --radius-micro: 1px;
+  --radius-sm:    4px;
+  --radius-md:    5px;
+  --radius-nav:   6px;
+  --radius-lg:    8px;
+
+  --space-1:   4px;  --space-2:   8px;  --space-3:  12px;
+  --space-4:  16px;  --space-5:  20px;  --space-6:  24px;
+  --space-8:  32px;  --space-10: 40px;  --space-12: 48px;
+  --space-16: 64px;  --space-20: 80px;  --space-24: 96px;
+
+  --font-primary: 'DM Sans', 'SF Pro Display', -apple-system, sans-serif;
+  --font-mono:    'Source Code Pro', 'SFMono-Regular', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--font-primary);
+  font-size: 1rem; font-weight: 300; line-height: 1.4;
+  color: var(--c-body); background: var(--c-white);
+  font-feature-settings: "ss01";
+}
+:focus-visible { outline: 2px solid var(--c-purple); outline-offset: 2px; }

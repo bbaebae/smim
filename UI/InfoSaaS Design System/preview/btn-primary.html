@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px 24px; background: #fff; font-family: var(--font-primary); }
+  .section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #64748d; margin-bottom: 10px; font-feature-settings: "ss01"; }
+  .gap { height: 16px; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 8px 16px; border-radius: 4px; font-family: var(--font-primary);
+    font-size: 16px; font-weight: 400; line-height: 1; font-feature-settings: "ss01";
+    cursor: pointer; border: none; transition: background 150ms ease, box-shadow 150ms ease;
+    text-decoration: none;
+  }
+  .btn-primary { background: #533afd; color: #fff; }
+  .btn-primary:hover { background: #4434d4; }
+  .btn-ghost { background: transparent; color: #533afd; border: 1px solid #b9b9f9; }
+  .btn-ghost:hover { background: rgba(83,58,253,0.05); }
+  .btn-info { background: transparent; color: #2874ad; border: 1px solid rgba(43,145,223,0.2); }
+  .btn-muted { background: transparent; color: rgba(16,16,16,0.3); outline: 1px solid rgb(212,222,233); }
+
+  .btn-sm {
+    padding: 6px 12px; font-size: 14px; border-radius: 4px;
+    font-family: var(--font-primary); font-weight: 400; font-feature-settings: "ss01";
+    cursor: pointer; border: none; transition: background 150ms ease;
+    display: inline-flex; align-items: center;
+  }
+  .btn-sm-primary { background: #533afd; color: #fff; }
+  .btn-sm-ghost   { background: transparent; color: #533afd; border: 1px solid #b9b9f9; }
+
+  .divider { width: 1px; height: 28px; background: #e5edf5; }
+</style>
+</head>
+<body>
+<div class="section-label">Primary Buttons</div>
+<div class="row">
+  <button class="btn btn-primary">지금 시작하기</button>
+  <button class="btn btn-ghost">더 알아보기</button>
+  <button class="btn btn-info">영업팀 문의</button>
+  <button class="btn btn-muted" disabled>사용 불가</button>
+</div>
+<div class="gap"></div>
+<div class="section-label">Small Buttons</div>
+<div class="row">
+  <button class="btn-sm btn-sm-primary">저장</button>
+  <button class="btn-sm btn-sm-ghost">취소</button>
+  <button class="btn-sm btn-sm-primary">내보내기</button>
+  <button class="btn-sm btn-sm-ghost">복사</button>
+</div>
+<div class="gap"></div>
+<div class="section-label">Dark Section Context</div>
+<div class="row" style="background:#1c1e54; border-radius:6px; padding:16px;">
+  <button class="btn btn-primary">무료로 시작</button>
+  <button class="btn" style="background:rgba(255,255,255,0.12); color:#fff; border:1px solid rgba(255,255,255,0.2);">데모 보기</button>
+</div>
+</body>
+</html>

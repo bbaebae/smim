@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px 24px; background: #fff; font-family: var(--font-primary); }
+  .section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #64748d; margin-bottom: 10px; font-feature-settings: "ss01"; }
+  .gap { height: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; max-width: 280px; }
+  .form-label { font-size: 14px; font-weight: 400; color: #273951; font-feature-settings: "ss01"; }
+  .form-input {
+    font-family: var(--font-primary); font-size: 16px; font-weight: 300;
+    font-feature-settings: "ss01"; color: #061b31;
+    border: 1px solid #e5edf5; border-radius: 4px;
+    padding: 8px 12px; outline: none; transition: border-color 150ms ease, box-shadow 150ms ease;
+    background: #fff;
+  }
+  .form-input::placeholder { color: #64748d; }
+  .form-input:focus { border-color: #533afd; box-shadow: 0 0 0 2px rgba(83,58,253,0.12); }
+  .form-input.has-error { border-color: #ea2261; }
+  .form-input.is-success { border-color: #15be53; }
+  .form-hint { font-size: 12px; color: #64748d; font-feature-settings: "ss01"; }
+  .form-error { font-size: 12px; color: #ea2261; font-feature-settings: "ss01"; }
+  .row { display: flex; gap: 16px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div class="row">
+  <div>
+    <div class="section-label">Default</div>
+    <div class="form-group">
+      <label class="form-label">제목</label>
+      <input class="form-input" type="text" placeholder="정보 제목을 입력하세요">
+      <span class="form-hint">최대 100자까지 입력 가능합니다.</span>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Focus</div>
+    <div class="form-group">
+      <label class="form-label">검색어</label>
+      <input class="form-input" type="text" value="분기 보고서" style="border-color:#533afd; box-shadow: 0 0 0 2px rgba(83,58,253,0.12);">
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Error</div>
+    <div class="form-group">
+      <label class="form-label">이메일</label>
+      <input class="form-input has-error" type="text" value="잘못된 이메일">
+      <span class="form-error">올바른 이메일 형식이 아닙니다.</span>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Success</div>
+    <div class="form-group">
+      <label class="form-label">이메일</label>
+      <input class="form-input is-success" type="text" value="user@example.com">
+      <span class="form-hint" style="color:#108c3d;">사용 가능한 이메일입니다.</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

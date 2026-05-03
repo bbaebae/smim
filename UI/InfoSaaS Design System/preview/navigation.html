@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 0; background: #f0f4f8; font-family: var(--font-primary); }
+
+  nav {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e5edf5;
+    padding: 0 24px;
+    height: 56px;
+    display: flex; align-items: center; gap: 32px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .nav-logo {
+    font-size: 16px; font-weight: 500; color: #061b31;
+    font-feature-settings: "ss01"; letter-spacing: -0.3px;
+    text-decoration: none; flex-shrink: 0;
+  }
+  .nav-logo span { color: #533afd; }
+  .nav-links { display: flex; gap: 4px; flex: 1; }
+  .nav-link {
+    font-size: 14px; font-weight: 400; color: #061b31;
+    font-feature-settings: "ss01"; text-decoration: none;
+    padding: 6px 10px; border-radius: 6px;
+    transition: background 150ms ease, color 150ms ease;
+  }
+  .nav-link:hover { background: rgba(83,58,253,0.06); color: #533afd; }
+  .nav-link.active { color: #533afd; }
+  .nav-actions { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+  .nav-signin {
+    font-size: 14px; font-weight: 400; color: #061b31; font-feature-settings: "ss01";
+    text-decoration: none; padding: 6px 12px; border-radius: 4px;
+    transition: color 150ms ease;
+  }
+  .nav-signin:hover { color: #533afd; }
+  .nav-cta {
+    font-size: 14px; font-weight: 400; color: #fff; font-feature-settings: "ss01";
+    background: #533afd; padding: 7px 14px; border-radius: 4px; text-decoration: none;
+    transition: background 150ms ease;
+  }
+  .nav-cta:hover { background: #4434d4; }
+
+  .page-content {
+    padding: 32px 24px;
+  }
+  .page-note {
+    font-size: 11px; color: #64748d; font-feature-settings: "ss01";
+    background: #fff; border: 1px solid #e5edf5; border-radius: 4px;
+    padding: 10px 14px; margin-top: 16px; max-width: 500px;
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="#">Info<span>SaaS</span></a>
+  <div class="nav-links">
+    <a class="nav-link active" href="#">기능</a>
+    <a class="nav-link" href="#">가격</a>
+    <a class="nav-link" href="#">팀 플랜</a>
+    <a class="nav-link" href="#">고객 사례</a>
+    <a class="nav-link" href="#">문서</a>
+  </div>
+  <div class="nav-actions">
+    <a class="nav-signin" href="#">로그인</a>
+    <a class="nav-cta" href="#">지금 시작하기</a>
+  </div>
+</nav>
+<div class="page-content">
+  <div class="page-note">
+    ↑ 고정 헤더 · backdrop-filter blur(12px) · 링크 14px weight 400 · CTA 보라색 버튼 우측 정렬
+  </div>
+</div>
+</body>
+</html>

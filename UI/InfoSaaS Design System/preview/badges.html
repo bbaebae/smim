@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px 24px; background: #fff; font-family: var(--font-primary); }
+  .section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #64748d; margin-bottom: 10px; font-feature-settings: "ss01"; }
+  .gap { height: 14px; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+  /* Badges */
+  .badge {
+    display: inline-flex; align-items: center; padding: 1px 6px;
+    border-radius: 4px; font-family: var(--font-primary); font-feature-settings: "ss01";
+    line-height: 1.5;
+  }
+  .badge-neutral { background: #fff; color: #000; border: 1px solid #f6f9fc; font-size: 11px; font-weight: 400; }
+  .badge-success { background: rgba(21,190,83,0.2); color: #108c3d; border: 1px solid rgba(21,190,83,0.4); font-size: 10px; font-weight: 300; }
+  .badge-purple  { background: rgba(83,58,253,0.08); color: #533afd; border: 1px solid #d6d9fc; font-size: 10px; font-weight: 400; }
+  .badge-magenta { background: #ffd7ef; color: #c4187a; border: 1px solid #ffd7ef; font-size: 10px; font-weight: 400; }
+  .badge-warning { background: rgba(155,104,41,0.1); color: #9b6829; border: 1px solid rgba(155,104,41,0.25); font-size: 10px; font-weight: 400; }
+  .badge-dark    { background: #1c1e54; color: rgba(255,255,255,0.85); border: none; font-size: 10px; font-weight: 300; }
+
+  /* Tags */
+  .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 400;
+    font-family: var(--font-primary); font-feature-settings: "ss01";
+    background: #f0f4f8; color: #273951; border: 1px solid #e5edf5;
+  }
+  .tag-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="section-label">Status Badges</div>
+<div class="row">
+  <span class="badge badge-success">● 활성</span>
+  <span class="badge badge-neutral">기본</span>
+  <span class="badge badge-purple">새로운 기능</span>
+  <span class="badge badge-magenta">베타</span>
+  <span class="badge badge-warning">⚠ 주의</span>
+  <span class="badge badge-dark">비공개</span>
+</div>
+<div class="gap"></div>
+<div class="section-label">Info Tags</div>
+<div class="row">
+  <span class="tag"><span class="tag-dot" style="background:#533afd;"></span>재무</span>
+  <span class="tag"><span class="tag-dot" style="background:#15be53;"></span>완료</span>
+  <span class="tag"><span class="tag-dot" style="background:#ea2261;"></span>중요</span>
+  <span class="tag"><span class="tag-dot" style="background:#9b6829;"></span>검토 중</span>
+  <span class="tag">2026년 1분기</span>
+  <span class="tag">팀 공유</span>
+  <span class="tag">문서</span>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: #f8fafc; font-family: var(--font-primary); }
+  .section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #64748d; margin-bottom: 8px; font-feature-settings: "ss01"; }
+  .border-row { display: flex; flex-direction: column; gap: 8px; }
+  .border-sample { height: 36px; border-radius: 4px; background: #fff; display: flex; align-items: center; padding: 0 12px; }
+  .border-label { font-size: 11px; color: #273951; font-feature-settings: "ss01"; flex: 1; }
+  .border-hex { font-size: 10px; color: #64748d; font-family: 'Source Code Pro', monospace; }
+</style>
+</head>
+<body>
+<div class="section-label">Border Tokens</div>
+<div class="border-row">
+  <div class="border-sample" style="border: 1px solid #e5edf5;"><span class="border-label">Default Border</span><span class="border-hex">#e5edf5</span></div>
+  <div class="border-sample" style="border: 1px solid #b9b9f9;"><span class="border-label">Purple Border (Active/Selected)</span><span class="border-hex">#b9b9f9</span></div>
+  <div class="border-sample" style="border: 1px solid #d6d9fc;"><span class="border-label">Soft Purple Border</span><span class="border-hex">#d6d9fc</span></div>
+  <div class="border-sample" style="border: 1px solid #ffd7ef;"><span class="border-label">Magenta Border</span><span class="border-hex">#ffd7ef</span></div>
+  <div class="border-sample" style="border: 1px dashed #362baa;"><span class="border-label">Dashed Border (Drop zones)</span><span class="border-hex">#362baa dashed</span></div>
+  <div class="border-sample" style="border: 1px solid #061b31;"><span class="border-label">Dark Accent Border</span><span class="border-hex">#061b31</span></div>
+</div>
+</body>
+</html>
