@@ -40,38 +40,49 @@ export default function LandingPage() {
       {/* Hero */}
       <section className={styles.hero}>
         <div className={styles.heroInner}>
-          <div className={styles.heroBadge}>
-            <span className={styles.heroBadgeDot} />
-            AI 기반 지식 관리 · SM-2 간격 반복
-          </div>
-          <h1 className={styles.heroH1}>
-            읽고 저장하고<br />
-            <em className={styles.heroH1Em}>진짜로 기억하세요</em>
-          </h1>
-          <p className={styles.heroSub}>
-            아티클, 유튜브, 파일을 저장하면 Claude AI가 자동으로 요약·분류합니다. 망각 전에 복습 알림을 드려 지식이 스며들게 합니다.
-          </p>
-          <div className={styles.heroStats}>
+          <div className={styles.heroGrid}>
+            {/* Left: heading */}
             <div>
-              <div className={styles.heroStatVal}>60%<span style={{ fontSize: 16, color: '#136299' }}>↑</span></div>
-              <div className={styles.heroStatLabel}>저장→복습 완료 전환율</div>
+              <div className={styles.heroBadge}>
+                <span className={styles.heroBadgeDot} />
+                읽은 것을 진짜 기억으로 — Second Brain
+              </div>
+              <h1 className={styles.heroH1}>
+                정보는 쏟아지는데<br />
+                <em className={styles.heroH1Em}>기억에 남는 건 없나요?</em>
+              </h1>
+              <p className={styles.heroSub}>
+                한 번 읽고 잊어버리고, "나중에 봐야지" 하다 결국 안 보게 되는 악순환.<br />
+                스밈이 AI 요약과 과학적 복습 알고리즘으로 지식을 진짜 기억으로 만들어드립니다.
+              </p>
             </div>
-            <div>
-              <div className={styles.heroStatVal}>2주</div>
-              <div className={styles.heroStatLabel}>지식 장기 정착 기간</div>
+            {/* Right: stats + CTAs */}
+            <div className={styles.heroRight}>
+              <div className={styles.heroStatsCol}>
+                <div className={styles.heroStatItem}>
+                  <div className={styles.heroStatVal}>60%<span style={{ fontSize: 14, color: '#136299' }}>↑</span></div>
+                  <div className={styles.heroStatLabel}>기억 보유율 향상</div>
+                </div>
+                <div className={styles.heroStatDivider} />
+                <div className={styles.heroStatItem}>
+                  <div className={styles.heroStatVal}>2주</div>
+                  <div className={styles.heroStatLabel}>평균 기억 정착 기간</div>
+                </div>
+                <div className={styles.heroStatDivider} />
+                <div className={styles.heroStatItem}>
+                  <div className={styles.heroStatVal}>5종</div>
+                  <div className={styles.heroStatLabel}>콘텐츠 유형 지원</div>
+                </div>
+              </div>
+              <div className={styles.heroCtas}>
+                <Link href="/signup" className={styles.btnHero}>
+                  무료로 시작하기 →
+                </Link>
+                <a href="#how" className={styles.btnHeroGhost}>
+                  작동 방식 보기
+                </a>
+              </div>
             </div>
-            <div>
-              <div className={styles.heroStatVal}>5종</div>
-              <div className={styles.heroStatLabel}>콘텐츠 타입 지원</div>
-            </div>
-          </div>
-          <div className={styles.heroCtas}>
-            <Link href="/signup" className={styles.btnHero}>
-              🚀 무료로 시작하기
-            </Link>
-            <a href="#how" className={styles.btnHeroGhost}>
-              ▶ 작동 방식 보기
-            </a>
           </div>
           {/* Mock UI */}
           <div className={styles.heroMockOuter}>
@@ -167,10 +178,16 @@ export default function LandingPage() {
 
             {/* SM-2 — col5 */}
             <div className={`${styles.bentoCard} ${styles.col5}`}>
-              <div className={`${styles.bentoIconWrap} ${styles.iconIndigo}`} style={{ fontSize: 18, color: '#132175' }}>⟳</div>
-              <div className={styles.bentoTitle}>SM-2 간격 반복 복습</div>
-              <div className={styles.bentoDesc}>3단계 평가로 다음 복습일이 자동 계산됩니다.</div>
-              <div style={{ display: 'flex', gap: 5, marginTop: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div className={`${styles.bentoIconWrap} ${styles.iconIndigo}`} style={{ fontSize: 18, color: '#132175', marginBottom: 0 }}>⟳</div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: 20, fontWeight: 900, color: '#132175', lineHeight: 1 }}>3</div>
+                  <div style={{ fontSize: 9, color: '#767683', marginTop: 1 }}>오늘 복습</div>
+                </div>
+              </div>
+              <div className={styles.bentoTitle} style={{ marginTop: 10 }}>SM-2 간격 반복 복습</div>
+              <div style={{ fontSize: 10, color: '#136299', fontWeight: 600, marginTop: 2, marginBottom: 12 }}>🔥 12일 연속 학습 중</div>
+              <div style={{ display: 'flex', gap: 5 }}>
                 <div style={{ flex: 1, padding: 8, borderRadius: 8, background: '#ffdbc8', textAlign: 'center', fontSize: 10, fontWeight: 700, color: '#321300' }}>잊었음<br /><span style={{ opacity: 0.65, fontSize: 9 }}>내일</span></div>
                 <div style={{ flex: 1, padding: 8, borderRadius: 8, background: '#cfe5ff', textAlign: 'center', fontSize: 10, fontWeight: 700, color: '#001d33' }}>희미함<br /><span style={{ opacity: 0.65, fontSize: 9 }}>+10일</span></div>
                 <div style={{ flex: 1, padding: 8, borderRadius: 8, background: '#132175', textAlign: 'center', fontSize: 10, fontWeight: 700, color: '#fff' }}>기억남<br /><span style={{ opacity: 0.75, fontSize: 9 }}>+4d→13d</span></div>
@@ -178,13 +195,22 @@ export default function LandingPage() {
             </div>
 
             {/* URL Save — col5 soft-blue */}
-            <div className={`${styles.bentoCard} ${styles.softBlueCard} ${styles.col5}`} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <div>
-                <div className={`${styles.bentoIconWrap} ${styles.iconIndigo}`} style={{ fontSize: 18, color: '#132175' }}>＋</div>
-                <div className={styles.bentoTitle}>URL 하나로 즉시 저장</div>
-                <div className={styles.bentoDesc}>링크 붙여넣기로 저장 완료. AI가 자동으로 읽어드립니다.</div>
-              </div>
-              <div style={{ fontSize: 44, fontWeight: 900, color: '#132175', letterSpacing: '-0.05em', lineHeight: 1, marginTop: 8 }}>247<span style={{ fontSize: 16, color: '#136299', fontWeight: 700 }}>개</span></div>
+            <div className={`${styles.bentoCard} ${styles.softBlueCard} ${styles.col5}`}>
+              <div className={`${styles.bentoIconWrap} ${styles.iconIndigo}`} style={{ fontSize: 18, color: '#132175' }}>＋</div>
+              <div className={styles.bentoTitle}>URL 하나로 즉시 저장</div>
+              <div className={styles.bentoDesc} style={{ marginBottom: 12 }}>링크 붙여넣기로 저장 완료. AI가 자동으로 읽어드립니다.</div>
+              {[
+                { icon: '🎬', title: 'Y Combinator — 스타트업 아이디어 찾는 법', cat: '비즈니스', time: '방금 전' },
+                { icon: '📄', title: '위라클 프로 투자 전략 2025', cat: '투자/경제', time: '1시간 전' },
+              ].map((item, i) => (
+                <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '7px 9px', background: 'rgba(255,255,255,0.7)', borderRadius: 8, marginBottom: 5, border: '1px solid rgba(19,33,117,0.07)' }}>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>{item.icon}</span>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: '#1b1c1c', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.title}</div>
+                    <div style={{ fontSize: 9, color: '#767683', marginTop: 1 }}>{item.cat} · {item.time}</div>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Weekly email — col8 */}
@@ -216,15 +242,32 @@ export default function LandingPage() {
             </div>
 
             {/* Retention — col12 dark */}
-            <div className={`${styles.bentoCard} ${styles.darkCard} ${styles.col12}`} style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+            <div className={`${styles.bentoCard} ${styles.darkCard} ${styles.col12}`} style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
               <div style={{ flexShrink: 0 }}>
-                <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(187,195,255,0.6)', marginBottom: 6 }}>30일 리텐션 목표</div>
+                <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(187,195,255,0.5)', marginBottom: 6 }}>30일 재방문율</div>
                 <div style={{ fontSize: 48, fontWeight: 900, color: '#fff', letterSpacing: '-0.05em', lineHeight: 1 }}>
                   30%<span style={{ fontSize: 20, color: '#bbc3ff' }}>↑</span>
                 </div>
+                <div style={{ fontSize: 10, color: 'rgba(187,195,255,0.6)', marginTop: 4 }}>vs 타사 &lt;10%</div>
               </div>
-              <div className={`${styles.bentoDesc} ${styles.bentoDescLight}`}>
-                기존 북마크 앱 재방문율 10% 미만 → 스밈은 SM-2 복습으로 30일 리텐션 30% 달성을 목표합니다.
+              <div style={{ flex: 1 }}>
+                {[
+                  { label: '일반 북마크앱', pct: 10, color: 'rgba(187,195,255,0.25)' },
+                  { label: '스밈 (SM-2)', pct: 30, color: '#bbc3ff' },
+                ].map(({ label, pct, color }) => (
+                  <div key={label} style={{ marginBottom: 10 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                      <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)' }}>{label}</span>
+                      <span style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.8)' }}>{pct}%</span>
+                    </div>
+                    <div style={{ height: 6, background: 'rgba(255,255,255,0.1)', borderRadius: 99, overflow: 'hidden' }}>
+                      <div style={{ width: `${pct * 3}%`, height: '100%', background: color, borderRadius: 99 }} />
+                    </div>
+                  </div>
+                ))}
+                <div className={`${styles.bentoDesc} ${styles.bentoDescLight}`} style={{ fontSize: 11, marginTop: 6 }}>
+                  SM-2 간격 반복 알고리즘으로 망각 직전 복습 → 지식이 장기 기억으로 정착됩니다.
+                </div>
               </div>
             </div>
           </div>
