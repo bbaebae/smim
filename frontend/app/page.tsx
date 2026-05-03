@@ -462,8 +462,19 @@ export default function LandingPage() {
                 </div>
               ))}
               <div style={{ padding: '16px 18px', background: '#fff', borderRadius: 12, border: '1px solid #e4e2e2', marginTop: 8 }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#132175', marginBottom: 5 }}>💡 자주 묻는 질문</div>
-                <div style={{ fontSize: 13, color: '#767683', lineHeight: 1.6 }}>무료 플랜에서 Pro로 업그레이드 시 데이터는 그대로 유지됩니다. 언제든지 취소 가능하며 잔여 기간은 환불됩니다.</div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#132175', marginBottom: 12 }}>💡 자주 묻는 질문</div>
+                {[
+                  { q: '무료 플랜과 Pro 플랜의 차이는 무엇인가요?', a: '무료 플랜은 콘텐츠 저장 20개, 기본 복습 기능을 제공합니다. Pro는 무제한 저장, AI 요약, 고급 복습 스케줄링을 지원합니다.' },
+                  { q: '업그레이드 시 기존 데이터는 유지되나요?', a: '네, 무료 플랜에서 Pro로 업그레이드해도 모든 데이터는 그대로 유지됩니다.' },
+                  { q: '언제든지 취소할 수 있나요?', a: '언제든지 취소 가능하며, 남은 구독 기간만큼 환불해 드립니다.' },
+                  { q: '어떤 콘텐츠 형식을 지원하나요?', a: 'YouTube 영상, 웹 아티클, PDF, 직접 작성한 노트 등 다양한 형식을 지원합니다.' },
+                  { q: '복습 알림은 어떻게 받나요?', a: '이메일 또는 앱 푸시 알림으로 복습 일정을 안내해 드립니다. 알림 설정은 마이페이지에서 조정할 수 있습니다.' },
+                ].map((faq, i, arr) => (
+                  <div key={i} style={{ paddingBottom: i < arr.length - 1 ? 10 : 0, marginBottom: i < arr.length - 1 ? 10 : 0, borderBottom: i < arr.length - 1 ? '1px solid #f0eeee' : 'none' }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: '#3a3a4a', marginBottom: 3 }}>{faq.q}</div>
+                    <div style={{ fontSize: 12, color: '#767683', lineHeight: 1.6 }}>{faq.a}</div>
+                  </div>
+                ))}
               </div>
             </div>
 
