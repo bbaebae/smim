@@ -68,6 +68,7 @@ export async function POST(request: NextRequest) {
         category: result.category,
         tags: result.tags,
         thumbnail_url: result.thumbnail_url,
+        summary_cards: result.summary_cards?.length ? result.summary_cards : null,
       })
       .select('id')
       .single()

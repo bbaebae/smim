@@ -14,7 +14,7 @@ export async function GET(_request: NextRequest) {
 
     const { data, error } = await supabase
       .from('review_schedule')
-      .select('id, content_id, next_review_at, interval_days, ease_factor, review_count, contents(title, summary, thumbnail_url, type)')
+      .select('id, content_id, next_review_at, interval_days, ease_factor, review_count, contents(title, summary, summary_cards, thumbnail_url, type, category, tags)')
       .lte('next_review_at', today)
       .eq('user_id', user.id)
 

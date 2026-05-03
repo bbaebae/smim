@@ -89,3 +89,18 @@ body {
 .ambient-shadow-hover {
   box-shadow: 0 4px 16px rgba(19, 33, 117, 0.1), 0 2px 4px rgba(19, 33, 117, 0.06);
 }
+
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.card-slide-in {
+  animation: cardSlideIn 0.22s ease-out;
+}

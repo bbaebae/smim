@@ -5,6 +5,11 @@ const headers = () => ({
   "x-internal-key": INTERNAL_API_KEY,
 })
 
+export type SummaryCard = {
+  title: string
+  body: string
+}
+
 export type ProcessResult = {
   title: string
   full_text: string
@@ -12,6 +17,7 @@ export type ProcessResult = {
   summary: string
   category: string
   tags: string[]
+  summary_cards: SummaryCard[]
 }
 
 export async function processContent(payload: {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import ReviewCard, { ReviewItem } from './ReviewCard'
 import Link from 'next/link'
@@ -32,17 +32,6 @@ export default function ReviewPageClient({ items }: Props) {
       setLoading(false)
     }
   }, [current, items.length, router])
-
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (e.code === 'Space' && !loading && !done && items.length > 0) {
-        e.preventDefault()
-        handleRate(items[current].content_id, 5)
-      }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [current, loading, done, items, handleRate])
 
   if (items.length === 0 || done) {
     return (

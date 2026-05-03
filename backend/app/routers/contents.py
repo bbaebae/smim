@@ -21,6 +21,7 @@ class ProcessResponse(BaseModel):
     summary: str
     category: str
     tags: list[str]
+    summary_cards: list[dict]
 
 
 @router.post("/process", response_model=ProcessResponse, dependencies=[Depends(verify_internal_key)])
@@ -68,6 +69,7 @@ async def process_content(req: ProcessRequest):
         summary=analysis["summary"],
         category=analysis["category"],
         tags=analysis["tags"],
+        summary_cards=analysis["summary_cards"],
     )
 
 
@@ -100,4 +102,5 @@ async def process_file(file: UploadFile = File(...)):
         summary=analysis["summary"],
         category=analysis["category"],
         tags=analysis["tags"],
+        summary_cards=analysis["summary_cards"],
     )
