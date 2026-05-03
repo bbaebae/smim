@@ -148,7 +148,7 @@
   font-size: clamp(28px, 4vw, 44px); font-weight: 800;
   color: #132175; letter-spacing: -0.025em; line-height: 1.15; margin-bottom: 14px;
 }
-.sectionSub { font-size: 18px; font-weight: 400; color: #454651; line-height: 1.6; max-width: 520px; }
+.sectionSub { font-size: 18px; font-weight: 400; color: #454651; line-height: 1.6; }
 
 /* ── Features bento ──────────────────────────────────────────── */
 .featuresBg { background: #fbf9f8; }
