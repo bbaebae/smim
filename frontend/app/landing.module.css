@@ -83,13 +83,13 @@
   color: #454651; line-height: 1.7; margin-bottom: 0;
 }
 .heroRight { display: flex; flex-direction: column; gap: 28px; }
-.heroStatsCol { display: flex; flex-direction: column; gap: 0; background: #fff; border: 1px solid #e4e2e2; border-radius: 14px; padding: 4px 0; box-shadow: 0 2px 12px rgba(19,33,117,0.06); }
-.heroStatItem { padding: 16px 20px; }
-.heroStatDivider { height: 1px; background: #f0eeee; margin: 0 16px; }
+.heroStatsCol { display: flex; flex-direction: row; background: #fff; border: 1px solid #e4e2e2; border-radius: 14px; padding: 0; box-shadow: 0 2px 12px rgba(19,33,117,0.06); overflow: hidden; }
+.heroStatItem { flex: 1; padding: 18px 16px; }
+.heroStatDivider { width: 1px; background: #f0eeee; margin: 12px 0; flex-shrink: 0; }
 .heroStats { display: flex; gap: 32px; margin-bottom: 48px; flex-wrap: wrap; }
 .heroStatVal { font-size: 26px; font-weight: 800; color: #132175; letter-spacing: -0.03em; line-height: 1; }
 .heroStatLabel { font-size: 12px; font-weight: 500; color: #767683; margin-top: 3px; }
-.heroCtas { display: flex; flex-direction: column; gap: 10px; align-items: stretch; }
+.heroCtas { display: flex; flex-direction: row; gap: 10px; align-items: center; }
 .btnHero {
   font-size: 16px; font-weight: 700; color: #fff;
   padding: 14px 28px; border-radius: 12px; background: #132175;
