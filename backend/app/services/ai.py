@@ -1,4 +1,5 @@
 import json
+import re
 from typing import TypedDict
 
 import anthropic
@@ -60,8 +61,11 @@ async def analyze_content(text: str, content_type: str) -> AnalysisResult:
             ],
         )
         raw = message.content[0].text if message.content[0].type == "text" else ""
+        match = re.search(r'```(?:json)?\s*(.*?)\s*```', raw, re.DOTALL)
+        if match:
+            raw = match.group(1)
         try:
-            parsed = json.loads(raw)
+            parsed = json.loads(raw.strip())
             cards = parsed.get("cards", [])
             return {
                 "summary": parsed.get("summary", ""),
@@ -95,8 +99,11 @@ async def generate_cards_from_summary(summary: str) -> list[dict]:
             ],
         )
         raw = message.content[0].text if message.content[0].type == "text" else ""
+        match = re.search(r'```(?:json)?\s*(.*?)\s*```', raw, re.DOTALL)
+        if match:
+            raw = match.group(1)
         try:
-            cards = json.loads(raw)
+            cards = json.loads(raw.strip())
             return cards if isinstance(cards, list) else []
         except Exception:
             return []
