@@ -73,3 +73,32 @@ async def analyze_content(text: str, content_type: str) -> AnalysisResult:
             return {"summary": raw[:300], "category": "기타", "tags": [], "summary_cards": []}
 
     return await asyncio.to_thread(_call)
+
+
+async def generate_cards_from_summary(summary: str) -> list[dict]:
+    import asyncio
+
+    def _call() -> list[dict]:
+        message = _client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=800,
+            messages=[
+                {
+                    "role": "user",
+                    "content": (
+                        "다음 요약에서 복습용 핵심 카드 3~5개를 JSON 배열로만 응답해. 다른 텍스트 없이 JSON만.\n"
+                        "각 카드: title(15자 이내 간결한 제목), body(핵심 내용 1~2문장)\n"
+                        f'형식: [{{"title":"...","body":"..."}}]\n\n'
+                        f"요약:\n{summary[:3000]}"
+                    ),
+                }
+            ],
+        )
+        raw = message.content[0].text if message.content[0].type == "text" else ""
+        try:
+            cards = json.loads(raw)
+            return cards if isinstance(cards, list) else []
+        except Exception:
+            return []
+
+    return await asyncio.to_thread(_call)
