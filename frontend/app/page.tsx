@@ -159,9 +159,9 @@ export default function LandingPage() {
             {/* AI Summary — col7 row2 */}
             <div className={`${styles.bentoCard} ${styles.indigoCard} ${styles.col7} ${styles.row2}`}>
               <div className={`${styles.bentoIconWrap} ${styles.iconLight}`} style={{ fontSize: 18 }}>✦</div>
-              <div className={`${styles.bentoTitle} ${styles.bentoTitleLight}`} style={{ fontSize: 20 }}>Claude AI 자동 요약·분류</div>
+              <div className={`${styles.bentoTitle} ${styles.bentoTitleLight}`} style={{ fontSize: 20 }}>읽지 않아도 기억됩니다</div>
               <div className={`${styles.bentoDesc} ${styles.bentoDescLight}`} style={{ marginTop: 6 }}>
-                URL 하나만 넣으면 AI가 본문을 추출하고 핵심을 3줄로 요약합니다. 카테고리와 태그도 자동.
+                URL만 저장하면 AI가 알아서 읽고, 핵심만 추려 3줄로 정리합니다. 카테고리·태그 분류까지 자동.
               </div>
               <div style={{ marginTop: 14, background: 'rgba(255,255,255,0.1)', borderRadius: 10, padding: '12px 14px', border: '1px solid rgba(255,255,255,0.14)' }}>
                 <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(187,195,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>AI 요약 결과</div>
