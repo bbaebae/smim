@@ -42,35 +42,36 @@ export default function LandingPage() {
         <div className={styles.heroInner}>
           <div className={styles.heroBadge}>
             <span className={styles.heroBadgeDot} />
-            AI 기반 지식 관리 · SM-2 간격 반복
+            읽은 것을 진짜 기억으로 — Second Brain
           </div>
           <h1 className={styles.heroH1}>
-            읽고 저장하고<br />
-            <em className={styles.heroH1Em}>진짜로 기억하세요</em>
+            정보는 쏟아지는데<br />
+            <em className={styles.heroH1Em}>기억에 남는 건 없나요?</em>
           </h1>
           <p className={styles.heroSub}>
-            아티클, 유튜브, 파일을 저장하면 Claude AI가 자동으로 요약·분류합니다. 망각 전에 복습 알림을 드려 지식이 스며들게 합니다.
+            한 번 읽고 잊어버리고, &ldquo;나중에 봐야지&rdquo; 하다 결국 안 보게 되는 악순환.<br />
+            스밈이 AI 요약과 과학적 복습 알고리즘으로 지식을 진짜 기억으로 만들어드립니다.
           </p>
           <div className={styles.heroStats}>
             <div>
-              <div className={styles.heroStatVal}>60%<span style={{ fontSize: 16, color: '#136299' }}>↑</span></div>
-              <div className={styles.heroStatLabel}>저장→복습 완료 전환율</div>
+              <div className={styles.heroStatVal}>60%↑</div>
+              <div className={styles.heroStatLabel}>기억 보유율 향상</div>
             </div>
             <div>
               <div className={styles.heroStatVal}>2주</div>
-              <div className={styles.heroStatLabel}>지식 장기 정착 기간</div>
+              <div className={styles.heroStatLabel}>평균 기억 정착 기간</div>
             </div>
             <div>
               <div className={styles.heroStatVal}>5종</div>
-              <div className={styles.heroStatLabel}>콘텐츠 타입 지원</div>
+              <div className={styles.heroStatLabel}>콘텐츠 유형 지원</div>
             </div>
           </div>
           <div className={styles.heroCtas}>
             <Link href="/signup" className={styles.btnHero}>
-              🚀 무료로 시작하기
+              무료로 시작하기 →
             </Link>
             <a href="#how" className={styles.btnHeroGhost}>
-              ▶ 작동 방식 보기
+              작동 방식 보기
             </a>
           </div>
           {/* Mock UI */}
