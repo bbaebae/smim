@@ -135,6 +135,15 @@ function AddContentInline({ onAnalyzing }: { onAnalyzing: (tab: Tab | null) => v
 
   const activeTab = TABS.find((t) => t.id === tab)!
 
+  function handleUrlChange(val: string) {
+    setUrl(val)
+    if (tab === 'article' && /(?:youtube\.com|youtu\.be)/.test(val)) {
+      setTab('youtube')
+    } else if (tab === 'youtube' && /^https?:\/\//.test(val) && !/youtube\.com|youtu\.be/.test(val)) {
+      setTab('article')
+    }
+  }
+
   function resetForm() {
     setUrl(''); setTitle(''); setText(''); setFile(null); setUpgradeNeeded(false); setDone(false)
   }
@@ -219,7 +228,7 @@ function AddContentInline({ onAnalyzing }: { onAnalyzing: (tab: Tab | null) => v
                 type="url"
                 placeholder={activeTab.placeholder}
                 value={url}
-                onChange={(e) => setUrl(e.target.value)}
+                onChange={(e) => handleUrlChange(e.target.value)}
                 required
                 className="w-full pl-9 pr-4 py-2.5 border border-[#c6c5d3] rounded-lg text-[14px] text-[#1b1c1c] placeholder:text-[#767683] outline-none focus:border-[#136299] focus:ring-2 focus:ring-[#136299]/10 transition-all bg-white"
               />

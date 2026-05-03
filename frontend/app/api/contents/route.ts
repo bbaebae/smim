@@ -87,6 +87,40 @@ export async function POST(request: NextRequest) {
   }
 }
 
+export async function PATCH(request: NextRequest) {
+  try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ error: '인증이 필요합니다' }, { status: 401 })
+
+    const { id, title, tags, category } = await request.json() as {
+      id: string
+      title?: string
+      tags?: string[]
+      category?: string
+    }
+    if (!id) return NextResponse.json({ error: 'id가 필요합니다' }, { status: 400 })
+
+    const updates: Record<string, unknown> = {}
+    if (title !== undefined) updates.title = title
+    if (tags !== undefined) updates.tags = tags
+    if (category !== undefined) updates.category = category
+
+    const { error } = await supabase
+      .from('contents')
+      .update(updates)
+      .eq('id', id)
+      .eq('user_id', user.id)
+
+    if (error) throw error
+    return NextResponse.json({ success: true })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : '서버 오류'
+    console.error(err)
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
+}
+
 export async function DELETE(request: NextRequest) {
   try {
     const supabase = await createClient()

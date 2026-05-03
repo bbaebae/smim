@@ -1,6 +1,14 @@
 'use client'
 
 import Image from 'next/image'
+import { calculateNextReview } from '@/lib/sm2'
+
+function formatInterval(days: number): string {
+  if (days <= 1) return '내일'
+  if (days < 7) return `${days}일 후`
+  if (days < 30) return `${Math.floor(days / 7)}주 후`
+  return `${Math.floor(days / 30)}개월 후`
+}
 
 export type ReviewItem = {
   id: string
@@ -28,6 +36,10 @@ type Props = {
 export default function ReviewCard({ item, onRate, loading }: Props) {
   const tags = item.contents.tags ?? []
   const category = item.contents.category
+
+  const q0 = calculateNextReview(item.ease_factor, item.interval_days, 0)
+  const q3 = calculateNextReview(item.ease_factor, item.interval_days, 3)
+  const q5 = calculateNextReview(item.ease_factor, item.interval_days, 5)
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -74,28 +86,28 @@ export default function ReviewCard({ item, onRate, loading }: Props) {
           disabled={loading}
           className="flex-1 flex flex-col items-center justify-center gap-1 py-3 px-6 rounded-xl bg-[#ffdbc8] text-[#321300] hover:bg-[#ffb68a] transition-colors disabled:opacity-50 max-w-[140px]"
         >
-          <span className="text-[11px] font-semibold tracking-wide opacity-70">&lt; 1m</span>
-          <span className="text-[14px] font-semibold">Forget</span>
+          <span className="text-[11px] font-semibold tracking-wide opacity-70">{formatInterval(q0.nextInterval)}</span>
+          <span className="text-[14px] font-semibold">어려움</span>
         </button>
         <button
           onClick={() => onRate(item.content_id, 3)}
           disabled={loading}
           className="flex-1 flex flex-col items-center justify-center gap-1 py-3 px-6 rounded-xl bg-[#cfe5ff] text-[#001d33] hover:bg-[#98cbff] transition-colors disabled:opacity-50 max-w-[140px]"
         >
-          <span className="text-[11px] font-semibold tracking-wide opacity-70">10m</span>
-          <span className="text-[14px] font-semibold">Vague</span>
+          <span className="text-[11px] font-semibold tracking-wide opacity-70">{formatInterval(q3.nextInterval)}</span>
+          <span className="text-[14px] font-semibold">보통</span>
         </button>
         <button
           onClick={() => onRate(item.content_id, 5)}
           disabled={loading}
           className="flex-1 flex flex-col items-center justify-center gap-1 py-3 px-6 rounded-xl bg-[#132175] text-white hover:bg-[#2d3a8c] transition-colors disabled:opacity-50 max-w-[140px] shadow-sm"
         >
-          <span className="text-[11px] font-semibold tracking-wide opacity-80">4d</span>
-          <span className="text-[14px] font-semibold">Remember</span>
+          <span className="text-[11px] font-semibold tracking-wide opacity-80">{formatInterval(q5.nextInterval)}</span>
+          <span className="text-[14px] font-semibold">쉬움</span>
         </button>
       </div>
 
-      <p className="text-center mt-3 text-[13px] text-[#767683]">Space 키로 Remember 선택</p>
+      <p className="text-center mt-3 text-[13px] text-[#767683]">Space 키로 쉬움 선택</p>
     </div>
   )
 }

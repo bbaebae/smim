@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import ContentTabs from '@/components/ContentTabs'
 import DeleteButton from '@/components/DeleteButton'
+import ContentMeta from '@/components/ContentMeta'
 
 export default async function ContentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -27,6 +28,16 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
     .eq('user_id', user.id)
     .single()
 
+  const { data: categoriesData } = await supabase
+    .from('contents')
+    .select('category')
+    .eq('user_id', user.id)
+    .not('category', 'is', null)
+
+  const userCategories = [...new Set(
+    (categoriesData ?? []).map((c) => c.category as string).filter(Boolean)
+  )].sort()
+
   return (
     <div className="px-6 py-8 max-w-3xl">
       {/* 헤더: 뒤로가기 + 삭제 */}
@@ -48,22 +59,13 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
         </div>
       )}
 
-      {/* 카테고리 + 태그 */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        <span className="rounded-full bg-[#136299]/10 px-3 py-1 text-[11px] font-semibold text-[#136299] uppercase tracking-wide">
-          {content.category}
-        </span>
-        {(content.tags as string[]).map((tag: string) => (
-          <span key={tag} className="rounded-full bg-[#efeded] border border-[#e4e2e2] px-3 py-1 text-[11px] font-medium text-[#454651]">
-            #{tag}
-          </span>
-        ))}
-      </div>
-
-      {/* 제목 */}
-      <h1 className="text-[24px] font-bold text-[#1b1c1c] leading-snug tracking-tight mb-3">
-        {content.title}
-      </h1>
+      <ContentMeta
+        contentId={content.id}
+        initialTitle={content.title}
+        initialCategory={content.category}
+        initialTags={content.tags as string[]}
+        userCategories={userCategories}
+      />
 
       {/* 원본 URL */}
       {content.url && (
@@ -100,20 +102,26 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
         </section>
       )}
 
-      {/* 유튜브 임베드 */}
+      {/* 유튜브 영상 */}
       {content.type === 'youtube' && content.url && (() => {
         const match = (content.url as string).match(/(?:v=|youtu\.be\/)([^&\n?#]+)/)
         const videoId = match?.[1]
         if (!videoId) return null
         return (
-          <div className="rounded-2xl overflow-hidden mb-6 aspect-video">
-            <iframe
-              src={`https://www.youtube.com/embed/${videoId}`}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
+          <section className="rounded-xl bg-white border border-[#e4e2e2] overflow-hidden mb-6 ambient-shadow">
+            <div className="flex items-center gap-2 px-5 py-4 border-b border-[#f5f3f3]">
+              <span className="material-symbols-outlined text-[18px] text-[#767683]">smart_display</span>
+              <h2 className="text-[13px] font-semibold text-[#454651]">영상 시청</h2>
+            </div>
+            <div className="aspect-video">
+              <iframe
+                src={`https://www.youtube.com/embed/${videoId}`}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </section>
         )
       })()}
 
