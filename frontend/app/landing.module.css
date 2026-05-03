@@ -50,18 +50,13 @@
 
 /* ── Hero ────────────────────────────────────────────────────── */
 .hero {
-  padding-top: 120px; padding-bottom: 72px;
   background: linear-gradient(160deg, #eef0ff 0%, #f5f3f3 40%, #fbf9f8 100%);
-  overflow: hidden;
+  padding-top: 120px; padding-bottom: 0; overflow: hidden;
 }
-.heroRow {
-  display: grid; grid-template-columns: 1fr 1fr;
-  align-items: center; gap: 56px;
+.heroInner {
   max-width: 1120px; margin: 0 auto;
-  padding: 0 clamp(20px, 5vw, 40px);
+  padding: 0 clamp(20px, 5vw, 48px);
 }
-.heroText { }
-.heroVisual { }
 .heroBadge {
   display: inline-flex; align-items: center; gap: 6px;
   background: #fff; border: 1px solid #e4e2e2;
@@ -102,14 +97,13 @@
 .btnHeroGhost:hover { border-color: #132175; background: rgba(19,33,117,0.03); }
 
 /* Hero mock */
-.heroMockWrap { position: relative; }
+.heroMockOuter { max-width: 900px; margin: 48px auto 0; }
 .heroMock {
-  background: rgba(255,255,255,0.80); backdrop-filter: blur(20px);
-  border: 1px solid rgba(228,226,226,0.8);
-  border-radius: 20px;
-  box-shadow: 0 8px 40px rgba(19,33,117,0.12), 0 2px 8px rgba(19,33,117,0.06);
-  padding: 20px; display: grid; grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto; gap: 14px;
+  background: rgba(255,255,255,0.75); backdrop-filter: blur(20px);
+  border: 1px solid rgba(228,226,226,0.8); border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -8px 40px rgba(19,33,117,0.10);
+  padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
 }
 .mockCard {
   background: #fff; border-radius: 16px; border: 1px solid #e4e2e2;
@@ -369,8 +363,7 @@
 
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .heroRow { grid-template-columns: 1fr; }
-  .heroVisual { display: none; }
+  .heroMock { grid-template-columns: 1fr; }
   .col5, .col7, .col4, .col8, .col6 { grid-column: span 12; }
   .bento { grid-auto-rows: auto; }
   .row2 { grid-row: span 1; }

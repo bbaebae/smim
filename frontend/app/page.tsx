@@ -39,88 +39,95 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className={styles.hero}>
-        <div className={styles.heroRow}>
-          {/* Text column */}
-          <div className={styles.heroText}>
-            <div className={styles.heroBadge}>
-              <span className={styles.heroBadgeDot} />
-              읽은 것을 진짜 기억으로 — Second Brain
+        <div className={styles.heroInner}>
+          <div className={styles.heroBadge}>
+            <span className={styles.heroBadgeDot} />
+            AI 기반 지식 관리 · SM-2 간격 반복
+          </div>
+          <h1 className={styles.heroH1}>
+            읽고 저장하고<br />
+            <em className={styles.heroH1Em}>진짜로 기억하세요</em>
+          </h1>
+          <p className={styles.heroSub}>
+            아티클, 유튜브, 파일을 저장하면 Claude AI가 자동으로 요약·분류합니다. 망각 전에 복습 알림을 드려 지식이 스며들게 합니다.
+          </p>
+          <div className={styles.heroStats}>
+            <div>
+              <div className={styles.heroStatVal}>60%<span style={{ fontSize: 16, color: '#136299' }}>↑</span></div>
+              <div className={styles.heroStatLabel}>저장→복습 완료 전환율</div>
             </div>
-            <h1 className={styles.heroH1}>
-              정보는 쏟아지는데<br />
-              <em className={styles.heroH1Em}>기억에 남는 건 없나요?</em>
-            </h1>
-            <p className={styles.heroSub}>
-              한 번 읽고 잊어버리고, &ldquo;나중에 봐야지&rdquo; 하다 결국 안 보게 되는 악순환.<br />
-              스밈이 AI 요약과 과학적 복습 알고리즘으로 지식을 진짜 기억으로 만들어드립니다.
-            </p>
-            <div className={styles.heroStats}>
-              <div>
-                <div className={styles.heroStatVal}>60%↑</div>
-                <div className={styles.heroStatLabel}>기억 보유율 향상</div>
-              </div>
-              <div>
-                <div className={styles.heroStatVal}>2주</div>
-                <div className={styles.heroStatLabel}>평균 기억 정착 기간</div>
-              </div>
-              <div>
-                <div className={styles.heroStatVal}>5종</div>
-                <div className={styles.heroStatLabel}>콘텐츠 유형 지원</div>
-              </div>
+            <div>
+              <div className={styles.heroStatVal}>2주</div>
+              <div className={styles.heroStatLabel}>지식 장기 정착 기간</div>
             </div>
-            <div className={styles.heroCtas}>
-              <Link href="/signup" className={styles.btnHero}>
-                무료로 시작하기 →
-              </Link>
-              <a href="#how" className={styles.btnHeroGhost}>
-                작동 방식 보기
-              </a>
+            <div>
+              <div className={styles.heroStatVal}>5종</div>
+              <div className={styles.heroStatLabel}>콘텐츠 타입 지원</div>
             </div>
           </div>
-
-          {/* Mock UI column */}
-          <div className={styles.heroVisual}>
-            <div className={styles.heroMockWrap}>
-              <div className={styles.heroMock}>
-                <div className={styles.mockCard}>
-                  <div className={styles.mockLabel}>오늘의 복습</div>
-                  <div className={styles.mockBig}>12</div>
-                  <div className={styles.mockChipRow}>
-                    <span className={`${styles.mockChip} ${styles.chipBlue}`}>AI 요약</span>
-                    <span className={`${styles.mockChip} ${styles.chipIndigo}`}>SM-2</span>
-                    <span className={`${styles.mockChip} ${styles.chipPeach}`}>YouTube</span>
+          <div className={styles.heroCtas}>
+            <Link href="/signup" className={styles.btnHero}>
+              🚀 무료로 시작하기
+            </Link>
+            <a href="#how" className={styles.btnHeroGhost}>
+              ▶ 작동 방식 보기
+            </a>
+          </div>
+          {/* Mock UI */}
+          <div className={styles.heroMockOuter}>
+            <div className={styles.heroMock}>
+              {/* 이번 달 저장 */}
+              <div className={styles.mockCard} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div className={styles.mockLabel}>이번 달 저장</div>
+                  <div className={styles.mockBig}>247</div>
+                  <div style={{ fontSize: 12, color: '#136299', fontWeight: 600, marginTop: 4 }}>↑ 23% 지난달 대비</div>
+                </div>
+                <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 10 }}>
+                  <span className={`${styles.mockChip} ${styles.chipBlue}`}>📄 아티클</span>
+                  <span className={`${styles.mockChip} ${styles.chipBlue}`}>🎬 YouTube</span>
+                  <span className={`${styles.mockChip} ${styles.chipBlue}`}>📎 파일</span>
+                </div>
+              </div>
+              {/* 최근 저장 */}
+              <div className={styles.mockCard} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div className={styles.mockLabel}>최근 저장</div>
+                <div style={{ display: 'flex', gap: 9 }}>
+                  <div style={{ width: 38, height: 38, borderRadius: 8, background: '#efeded', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 18 }}>🎬</div>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: '#1b1c1c', lineHeight: 1.3 }}>Y Combinator — 스타트업 아이디어를 찾는 방법</div>
+                    <div style={{ fontSize: 10, color: '#767683', marginTop: 2 }}>비즈니스/마케팅 · 방금 전</div>
                   </div>
                 </div>
-                <div className={`${styles.mockCard} ${styles.mockCardDark}`}>
-                  <div className={`${styles.mockLabel} ${styles.mockLabelLight}`}>복습 진행</div>
-                  <div style={{ fontSize: 13, color: 'rgba(187,195,255,0.85)', lineHeight: 1.5, marginTop: 6 }}>
-                    &ldquo;뇌는 반복을 통해 기억을 강화합니다. 스밈이 최적 타이밍을 계산합니다.&rdquo;
-                  </div>
-                  <div className={styles.mockReviewBtns} style={{ marginTop: 'auto', paddingTop: 16 }}>
-                    <button className={styles.mockRbtn} style={{ background: '#ffdad6', color: '#ba1a1a' }}>잊었음</button>
-                    <button className={styles.mockRbtn} style={{ background: '#ffdbc8', color: '#5c2100' }}>희미함</button>
-                    <button className={styles.mockRbtn} style={{ background: '#c8f0dc', color: '#004d23' }}>기억남</button>
-                  </div>
+                <div style={{ background: '#f5f3f3', borderRadius: 8, padding: '9px 11px', fontSize: 11, color: '#454651', lineHeight: 1.5 }}>
+                  <span style={{ fontWeight: 600, color: '#136299' }}>AI 요약:</span> 좋은 아이디어는 자신이 직접 겪은 문제에서 나온다.
                 </div>
-                <div className={styles.mockCard}>
-                  <div className={styles.mockLabel}>최근 저장</div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8 }}>
-                    {['딥러닝의 기초', '생산성 시스템', '마케팅 전략'].map((t, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#454651' }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: ['#136299', '#132175', '#9b7240'][i], flexShrink: 0 }} />
-                        {t}
-                      </div>
-                    ))}
-                  </div>
+              </div>
+              {/* 오늘의 복습 */}
+              <div className={`${styles.mockCard} ${styles.mockCardDark}`} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div className={`${styles.mockLabel} ${styles.mockLabelLight}`}>오늘의 복습</div>
+                  <div className={styles.mockBig} style={{ color: '#fff', fontSize: 32 }}>3개</div>
+                  <div style={{ fontSize: 10, color: 'rgba(187,195,255,0.75)', marginTop: 2 }}>대기 중</div>
                 </div>
-                <div className={styles.mockCard} style={{ background: 'linear-gradient(135deg, #eef4ff, #dfe0ff)', border: 'none' }}>
-                  <div className={styles.mockLabel}>카테고리</div>
-                  <div className={styles.mockChipRow}>
-                    <span className={`${styles.mockChip} ${styles.chipIndigo}`}>기술</span>
-                    <span className={`${styles.mockChip} ${styles.chipBlue}`}>비즈니스</span>
-                    <span className={`${styles.mockChip} ${styles.chipPeach}`}>자기계발</span>
-                  </div>
+                <div style={{ display: 'flex', gap: 5, marginTop: 10 }}>
+                  <button className={styles.mockRbtn} style={{ background: '#ffdbc8', color: '#321300' }}>잊었음</button>
+                  <button className={styles.mockRbtn} style={{ background: '#cfe5ff', color: '#001d33' }}>희미함</button>
+                  <button className={styles.mockRbtn} style={{ background: 'rgba(255,255,255,0.18)', color: '#fff' }}>기억남</button>
                 </div>
+              </div>
+              {/* 주간 복습률 */}
+              <div className={styles.mockCard}>
+                <div className={styles.mockLabel} style={{ marginBottom: 10 }}>주간 복습률</div>
+                {[['기술', 82, '#132175'], ['비즈니스', 61, '#136299'], ['투자', 45, '#bbc3ff']].map(([label, pct, color]) => (
+                  <div key={label as string} style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 5 }}>
+                    <span style={{ fontSize: 10, fontWeight: 500, color: '#454651', width: 48, flexShrink: 0 }}>{label}</span>
+                    <div style={{ flex: 1, height: 5, background: '#e4e2e2', borderRadius: 99, overflow: 'hidden' }}>
+                      <div style={{ width: `${pct}%`, height: '100%', background: color as string, borderRadius: 99 }} />
+                    </div>
+                    <span style={{ fontSize: 10, color: '#767683', width: 26, textAlign: 'right' }}>{pct}%</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
