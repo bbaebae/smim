@@ -61,6 +61,17 @@ export default function Sidebar() {
 
         {/* Footer */}
         <div className="flex flex-col gap-1 border-t border-[#e4e2e2] pt-4">
+          <Link
+            href="/settings"
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-[14px] font-medium transition-colors ${
+              pathname === '/settings'
+                ? 'bg-white text-[#132175] ambient-shadow'
+                : 'text-[#767683] hover:text-[#132175] hover:bg-white/60'
+            }`}
+          >
+            <span className="material-symbols-outlined text-[20px]">settings</span>
+            설정
+          </Link>
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-[14px] text-[#767683] hover:text-[#132175] hover:bg-white/60 transition-colors w-full text-left"
@@ -73,13 +84,13 @@ export default function Sidebar() {
 
       {/* Mobile bottom nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#e4e2e2] z-50 flex justify-around items-center px-2 py-2">
-        {navItems.map(({ href, icon, label }) => {
+        {[...navItems, { href: '/settings', icon: 'settings', label: '설정' }].map(({ href, icon, label }) => {
           const active = pathname === href || (href !== '/dashboard' && pathname.startsWith(href))
           return (
             <Link
               key={href}
               href={href}
-              className={`flex flex-col items-center gap-0.5 px-4 py-1 rounded-lg transition-colors ${
+              className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg transition-colors ${
                 active ? 'text-[#132175]' : 'text-[#767683]'
               }`}
             >

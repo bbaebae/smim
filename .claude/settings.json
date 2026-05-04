@@ -87,11 +87,13 @@
       "Bash(git -C /Users/bbaebae/Desktop/program/smim show 039c725 --name-only --stat)",
       "Bash(git -C /Users/bbaebae/Desktop/program/smim add -A)",
       "Bash(gh run *)",
-      "Bash(gh deployment *)"
+      "Bash(gh deployment *)",
+      "Bash(tar -xf design)"
     ],
     "additionalDirectories": [
       "/Users/bbaebae/Desktop/program/smim/frontend/app/(dashboard)/contents",
-      "/tmp"
+      "/tmp",
+      "/Users/bbaebae/.claude/projects/-Users-bbaebae-Desktop-program-smim/07cb7626-ffed-41e1-a32f-6c42b90de7f3/tool-results"
     ]
   }
 }

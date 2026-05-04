@@ -36,8 +36,21 @@ async def weekly_report():
             "category": row["category"] or "",
         })
 
+    # fetch email_notify settings for all users
+    settings_res = db.from_("user_settings") \
+        .select("user_id, email_notify") \
+        .execute()
+    email_notify_map: dict[str, bool] = {
+        row["user_id"]: row.get("email_notify", True)
+        for row in settings_res.data or []
+    }
+
     sent = 0
     for user_id, items in user_contents.items():
+        # skip users who opted out of email
+        if email_notify_map.get(user_id, True) is False:
+            continue
+
         # get user email + plan from auth.users via service role
         user_res = db.auth.admin.get_user_by_id(user_id)
         user = user_res.user
@@ -82,8 +95,20 @@ async def review_notify():
             "category": content.get("category", ""),
         })
 
+    # fetch email/push preferences
+    settings_res = db.from_("user_settings") \
+        .select("user_id, email_notify") \
+        .execute()
+    email_notify_map: dict[str, bool] = {
+        row["user_id"]: row.get("email_notify", True)
+        for row in settings_res.data or []
+    }
+
     sent = 0
     for user_id, items in user_due.items():
+        if email_notify_map.get(user_id, True) is False:
+            continue
+
         user_res = db.auth.admin.get_user_by_id(user_id)
         user = user_res.user
         if not user or not user.email:
