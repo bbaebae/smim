@@ -10,11 +10,11 @@ export async function GET() {
 
   const { data } = await supabase
     .from('user_settings')
-    .select('email_notify, push_notify, push_subscription')
+    .select('email_notify')
     .eq('user_id', user.id)
     .single()
 
-  return NextResponse.json(data ?? { email_notify: true, push_notify: false, push_subscription: null })
+  return NextResponse.json(data ?? { email_notify: true })
 }
 
 export async function PATCH(request: NextRequest) {
@@ -23,13 +23,13 @@ export async function PATCH(request: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await request.json()
-  const allowed: Record<string, unknown> = {}
-  if (typeof body.email_notify === 'boolean') allowed.email_notify = body.email_notify
-  if (typeof body.push_notify === 'boolean') allowed.push_notify = body.push_notify
+  if (typeof body.email_notify !== 'boolean') {
+    return NextResponse.json({ error: 'Invalid payload' }, { status: 400 })
+  }
 
   const { error } = await supabase
     .from('user_settings')
-    .upsert({ user_id: user.id, ...allowed }, { onConflict: 'user_id' })
+    .upsert({ user_id: user.id, email_notify: body.email_notify }, { onConflict: 'user_id' })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json({ ok: true })

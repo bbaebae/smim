@@ -9,7 +9,7 @@ export default async function SettingsPage() {
 
   const { data: settings } = await supabase
     .from('user_settings')
-    .select('email_notify, push_notify')
+    .select('email_notify')
     .eq('user_id', user.id)
     .single()
 
@@ -17,7 +17,6 @@ export default async function SettingsPage() {
     <SettingsClient
       email={user.email ?? ''}
       initialEmailNotify={settings?.email_notify ?? true}
-      initialPushNotify={settings?.push_notify ?? false}
     />
   )
 }
